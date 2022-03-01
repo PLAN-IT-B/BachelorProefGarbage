@@ -88,7 +88,7 @@ boolean energie = true;
 boolean actief = false;
 
 //test
-boolean input = true;
+int n = 0;
 
 //Keypad
 const byte ROWS = 4; //four rows
@@ -108,7 +108,10 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 //lcd
 LiquidCrystal_I2C lcd(0x27,20,4);
-int c = 8;
+int c;
+boolean bl;
+boolean codeTekst;
+
 
 
 //code
@@ -118,6 +121,12 @@ int code[4];
 void setup() {
   // lcd init
   lcd.init();
+  lcd.backlight();
+  codeTekst = false;
+  c= 8;
+
+  
+  
   
 
   //Serial monitor
@@ -140,7 +149,15 @@ void setup() {
 void loop() {
 
   //key 
-  char key = '0'; //keypad.getKey()
+  
+  if(n==0){
+  char key = keypad.getKey();
+  
+  }
+  
+  
+
+ 
 
 //MQTT
   /*if (!client.connected())
@@ -160,28 +177,50 @@ void loop() {
     //No energy
   }
   else if(!energie){
+    lcd.noBacklight();
+    bl = false;
+    codeTekst = false;
+    
+
 
   }
 
   else if(energie && actief){
 
+    //Tegen flikkeren
+    if(bl ==false){
+      lcd.backlight();
+      bl = true;
+    }
+
   }
 
   else if(energie){
 
+    //Tegen flikkeren
+    if(bl ==false){
+      lcd.backlight();
+      bl = true;
+    }
+
     
-    
+    if(codeTekst == false){
     lcd.setCursor(2,0);
     lcd.print("Voer de code in:");
-    lcd.setCursor(c,2);
+    lcd.setCursor(8,2);
     lcd.print("____");
-    
-    if(key){
+    codeTekst = true;
+    }
 
+    //Serial.print(key);
+    
+    if(key!=NULL){
+      
       
     if(key =='#'){
+      
 
-      if(c ==12){
+      if(c ==11){
       boolean check = true;
       for(int i = 0;i<4;i++){
         if(code[i]!=cinput[i]){
@@ -195,38 +234,40 @@ void loop() {
       
     }
 
-    else{
-      c++;
-      lcd.setCursor(c,2);
-      
-    }
     
     }
    
 
-    if(key == '*'){
-
-      if(c>8){
-        lcd.print("_");
-        cinput[c-8] = -1;
+    else if(key == '*'){
+      Serial.println("back");
+      
         c--;
         lcd.setCursor(c,2);
+        lcd.print("_");
+        cinput[c-8] = 0;
+        
+        
 
 
-      }
+      
       
     }
   
     
     else{
-      lcd.print(key);
-      cinput[c]= key-'0';
+      Serial.println("Cijfer");
+      Serial.println(c);
+
+      if(c<11){
       lcd.setCursor(c,2);
+      lcd.print(key);
+      cinput[c-8]= key-'0';
+      lcd.setCursor(c,2);
+      c++;
+      lcd.display();
+      }
   
     }
-
-
-
 
   }
 }
