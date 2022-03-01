@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map DieShield
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+DieShield	KEYWORD1
+Die			KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin		KEYWORD2
+show		KEYWORD2
+roll		KEYWORD2
+isShaking	KEYWORD2
+setSensitivity	KEYWORD2
+getSensitivity	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+NONE		LITERAL1
+ONE			LITERAL1
+TWO			LITERAL1
+THREE		LITERAL1
+FOUR		LITERAL1
+FIVE		LITERAL1
+SIX			LITERAL1
+ALL			LITERAL1
+
+DS_SUCCESS	LITERAL1
+DS_INIT_ERROR	LITERAL1
+DS_NOT_NULL	LITERAL1
+DS_SHAKING	LITERAL1
+DS_NOT_SHAKING	LITERAL1
+
+ShakeCallback_t	LITERAL1
