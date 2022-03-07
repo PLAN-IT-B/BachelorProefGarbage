@@ -104,6 +104,7 @@ byte rowPins[ROWS] = {2, 3, 4, 5}; //connect to the row pinouts of the keypad
 byte colPins[COLS] = {6,7,8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+char key;
 
 
 //lcd
@@ -149,11 +150,9 @@ void setup() {
 void loop() {
 
   //key 
+  key = keypad.getKey(); //Vraag de input van de key op
   
-  if(n==0){
-  char key = keypad.getKey();
   
-  }
   
   
 
@@ -203,7 +202,7 @@ void loop() {
       bl = true;
     }
 
-    
+    //Check of het beginscherm er op staat, anders zet het er op
     if(codeTekst == false){
     lcd.setCursor(2,0);
     lcd.print("Voer de code in:");
@@ -214,21 +213,22 @@ void loop() {
 
     //Serial.print(key);
     
+    //Als de knop wordt ingedrukt
     if(key!=NULL){
       
-      
+    //Als # (enter wordt ingedrukt)
     if(key =='#'){
       
-
-      if(c ==11){
-      boolean check = true;
+      
+      if(c ==12){ //De positie is het laatste cijfer
+      boolean check = true; //Controleer of de code klopt
       for(int i = 0;i<4;i++){
         if(code[i]!=cinput[i]){
           check = false;
         }
       }
 
-      if(check == true){
+      if(check == true){ //Als de code klopt wordt de puzzel actief
         actief = true;
       }
       
@@ -238,27 +238,24 @@ void loop() {
     }
    
 
-    else if(key == '*'){
-      Serial.println("back");
+    else if(key == '*'){ //Als * (terug) wordt ingevuld
       
+        //Ga 1 terug, vervang het getal door _ en vervang de code door 0 (standaard getal in rij)
         c--;
         lcd.setCursor(c,2);
         lcd.print("_");
         cinput[c-8] = 0;
-        
-        
 
 
-      
       
     }
   
     
-    else{
+    else{ //Als er iets anders (cijfer) wordt ingedrukt
       Serial.println("Cijfer");
       Serial.println(c);
 
-      if(c<11){
+      if(c<11){ //Vul het getal in en schuif 1 plaats op.
       lcd.setCursor(c,2);
       lcd.print(key);
       cinput[c-8]= key-'0';
@@ -269,6 +266,7 @@ void loop() {
   
     }
 
+  key == NULL; //Reset het key signaal
   }
 }
 }
