@@ -20,7 +20,6 @@ long lastMsg = 0;
 char msg[50];
 int value = 0;
 
-void callback(char *topic, byte *message, unsigned int length);
 
 void setup_wifi()
 {
@@ -101,7 +100,7 @@ char keys[ROWS][COLS] = {
 };
 
 byte rowPins[ROWS] = {2, 3, 4, 5}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {6,7,8}; //connect to the column pinouts of the keypad
+byte colPins[COLS] = {9,7,8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
@@ -119,84 +118,18 @@ boolean codeTekst;
 int cinput[4];
 int code[4];
 
-void setup() {
-  // lcd init
-  lcd.init();
-  lcd.backlight();
-  codeTekst = false;
-  c= 8;
+void resetPuzzel(){
 
-  
-  
-  
-
-  //Serial monitor
-  Serial.begin(115200);
-
-  //MQTT
-  /*setup_wifi();
-  client.setServer(MQTT_SERVER, MQTT_PORT);
-  client.setCallback(callback);*/
-
-  
 }
-  
 
-  
-  
-  
-
-
-void loop() {
-
-  //key 
-  key = keypad.getKey(); //Vraag de input van de key op
-  
-  
-  
-  
-
- 
-
-//MQTT
-  /*if (!client.connected())
-  {
-    reconnect();
-  }
-  client.loop();
-
-  long now = millis();
-  if (now - lastMsg > 5000)
-  {
-    lastMsg = now;
-  }
-  */
-  
-  if(reset == 1){
-    //No energy
-  }
-  else if(!energie){
-    lcd.noBacklight();
+void geenEnergie(){
+lcd.noBacklight();
     bl = false;
     codeTekst = false;
-    
+}
 
-
-  }
-
-  else if(energie && actief){
-
-    //Tegen flikkeren
-    if(bl ==false){
-      lcd.backlight();
-      bl = true;
-    }
-
-  }
-
-  else if(energie){
-
-    //Tegen flikkeren
+void enkelEnergie(){
+  //Tegen flikkeren
     if(bl ==false){
       lcd.backlight();
       bl = true;
@@ -269,8 +202,94 @@ void loop() {
   key == NULL; //Reset het key signaal
   }
 }
+
+
+ void puzzel(){
+   //Tegen flikkeren
+    if(bl ==false){
+      lcd.backlight();
+      bl = true;
+    }
+
+    
+
+ }
+
+
+void setup() {
+  // lcd init
+  lcd.init();
+  lcd.backlight();
+  codeTekst = false;
+  c= 8;
+  n = 0;
+
+  
+  
+  
+
+  //Serial monitor
+  Serial.begin(115200);
+
+  //MQTT
+  /*setup_wifi();
+  client.setServer(MQTT_SERVER, MQTT_PORT);
+  client.setCallback(callback);*/
+
+  
 }
+  
+
+  
+  
+  
 
 
+void loop() {
+
+  energie = true;
+  reset = false;
+
+  /*Serial.println(reset);
+  Serial.println(energie);
+  Serial.println(actief);
+  Serial.println();*/
+
+  //key 
+  //key = keypad.getKey(); //Vraag de input van de key op
+
+  //MQTT
+ /* if (!client.connected())
+  {
+    reconnect();
+  }
+  client.loop();
+
+  long now = millis();
+  if (now - lastMsg > 5000)
+  {
+    lastMsg = now;
+  }*/
+  
+
+  if(reset){
+    resetPuzzel();
+  }
+
+  else if(!energie){
+    geenEnergie();
+  }
+
+  else if(energie && actief){
+    puzzel();
+  }
+
+  else if(energie){
+    enkelEnergie();
+  }
+ 
+  
+  
+}
 
 
