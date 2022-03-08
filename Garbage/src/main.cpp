@@ -5,6 +5,7 @@
 #include "PubSubClient.h" //pio lib install "knolleary/PubSubClient"
 #include "Keypad.h"
 #include <Adafruit_PN532.h>
+#include "HX711.h"
 
 //MQTT
 #define SSID          "NETGEAR68"
@@ -55,6 +56,16 @@ void callback(char *topic, byte *message, unsigned int length)
     messageTemp += (char)message[i];
   }
 
+ /* if (messageTemp == "Eerste 3 cijfers zijn ..."){
+    code[0] = code;
+    code[1] = code;
+    code[2] = code;
+  }
+
+  else if(messageTemp == "laatste cijfer is ..."){
+    code[3] = code;
+  }*/
+
 }
 
 void reconnect()
@@ -86,6 +97,9 @@ void reconnect()
 boolean reset = false;
 boolean energie = true;
 boolean actief = false;
+int rest = 0; //Hoeveel rest klaar?
+int pmd = 0; //Hoeveel pmd klaar?
+int p_k = 0; //Hoeveel papier en karton klaar?
 
 //test
 int n = 0;
@@ -105,6 +119,14 @@ byte colPins[COLS] = {9,7,8}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
+
+//I2C multiplexer
+void TCA9548A(uint8_t bus){
+  Wire.beginTransmission(0x70);  // TCA9548A address
+  Wire.write(1 << bus);          // send byte to select bus
+  Wire.endTransmission();
+  Serial.print(bus);
+}
 
 //Varia
 #define Button_pin1 1
@@ -131,13 +153,13 @@ uint8_t juisteWaardes1[4][uidLength];
 uint8_t juisteWaardes2[4][uidLength];
 uint8_t juisteWaardes3[4][uidLength];
 
-Adafruit_PN532 nfc1(pin1,pin2 );
+//Adafruit_PN532 nfc1(pin1,pin2 );
 
 
 
 void scanRFID1(){
   if(energie && actief){
-    
+    TCA9548A(1);
 
 
 
@@ -155,6 +177,7 @@ void scanRFID1(){
           juist = true; //Er is een juiste tag gevonden
           for(int k = 0;k<uidLength;k++){
           juisteWaardes1[j][k] == -1;
+          rest++;
         }
 
         }
@@ -308,11 +331,12 @@ void setup() {
   c= 8;
   n = 0;
 
-  //Serial monitor
+  //Serial monitor en I2C
   Serial.begin(115200);
+  Wire.begin();
 
   //MQTT
-  /*setup_wifi();
+ /* setup_wifi();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);*/
 
