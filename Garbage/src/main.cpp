@@ -105,6 +105,15 @@ byte colPins[COLS] = {9,7,8}; //connect to the column pinouts of the keypad
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
 
+//Varia
+#define Button_pin1 1
+#define Button_pin2 2
+#define Button_pin3 3
+
+//Hoeveel vuilnis in 1 vuilbak en check rfid
+int aantalVuilnis;
+bool checkVuilnis;
+
 
 //lcd
 LiquidCrystal_I2C lcd(0x27,20,4);
@@ -112,11 +121,72 @@ int c;
 boolean bl;
 boolean codeTekst;
 
+//RFID
+uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
+uint8_t uidLength; 
+uint8_t juisteWaardes1[4][3];  
+uint8_t juisteWaardes2[4][3];
+uint8_t juisteWaardes3[4][3];
 
 
-//code
+
+
+
+
+
+void scanRFID1(){
+  if(energie && actief){
+    
+
+
+
+    //Check rfid
+    bool juist = false;
+      for(int j = 0;j<aantalVuilnis;j++){
+        checkVuilnis = true;
+        for(int i = 0;i<uidLength;i++){
+          if( uid[i]!= juisteWaardes1[j][i]){
+            checkVuilnis == false;
+          }
+        }
+
+        if (checkVuilnis == true){
+          juist = true; //Er is een juiste tag gevonden
+          for(int k = 0;k<uidLength;k++){
+          juisteWaardes1[j][k] == -1;
+        }
+
+        }
+
+
+
+      }
+
+      if(!juist){
+       //geef fout signaal
+      }
+      
+
+
+  }
+
+}
+
+void scanRFID2(){
+
+}
+
+void scanRFID3(){
+
+}
+
+
+
+//code 
 int cinput[4];
-int code[4];
+int code[] = {-1,-1,-1,-1};
+
+
 
 void resetPuzzel(){
 
@@ -163,8 +233,21 @@ void enkelEnergie(){
 
       if(check == true){ //Als de code klopt wordt de puzzel actief
         actief = true;
+        //Stuur bericht
       }
-      
+
+      else{//Foute code stuur foutsignaal
+        lcd.setCursor(8,2);
+        lcd.print("____");
+        c = 8;
+        
+
+
+
+
+
+
+      }
     }
 
     
@@ -188,7 +271,7 @@ void enkelEnergie(){
       Serial.println("Cijfer");
       Serial.println(c);
 
-      if(c<11){ //Vul het getal in en schuif 1 plaats op.
+      if(c<12){ //Vul het getal in en schuif 1 plaats op.
       lcd.setCursor(c,2);
       lcd.print(key);
       cinput[c-8]= key-'0';
@@ -204,17 +287,16 @@ void enkelEnergie(){
 }
 
 
- void puzzel(){
+void puzzel(){
    //Tegen flikkeren
     if(bl ==false){
       lcd.backlight();
       bl = true;
     }
 
-    
+    //Hier moet de lcd nog aangestuurd worden
 
  }
-
 
 void setup() {
   // lcd init
@@ -224,7 +306,7 @@ void setup() {
   c= 8;
   n = 0;
 
-  
+                     
   
   
 
@@ -236,15 +318,14 @@ void setup() {
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);*/
 
+  //Buttons 
+  attachInterrupt(digitalPinToInterrupt(Button_pin1), scanRFID1, RISING);
+  attachInterrupt(digitalPinToInterrupt(Button_pin2), scanRFID2, RISING);
+  attachInterrupt(digitalPinToInterrupt(Button_pin3), scanRFID3, RISING);
+
   
 }
   
-
-  
-  
-  
-
-
 void loop() {
 
   energie = true;
@@ -257,6 +338,9 @@ void loop() {
 
   //key 
   //key = keypad.getKey(); //Vraag de input van de key op
+
+
+
 
   //MQTT
  /* if (!client.connected())
