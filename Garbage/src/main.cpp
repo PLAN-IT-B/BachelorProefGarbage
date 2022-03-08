@@ -4,6 +4,7 @@
 #include "WiFi.h"
 #include "PubSubClient.h" //pio lib install "knolleary/PubSubClient"
 #include "Keypad.h"
+#include <Adafruit_PN532.h>
 
 //MQTT
 #define SSID          "NETGEAR68"
@@ -123,19 +124,14 @@ boolean codeTekst;
 
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
-uint8_t uidLength; 
-uint8_t juisteWaardes1[4][3];
-//juisteWaardes[][] = {0x04, 0x0B, 0x43, 0x3A, 0xED, 0x4C, 0x81}, {0x04 0xF2 0x84 0xA2 0x2D 0x4D 0x80}
+const uint8_t uidLength = 7; 
+uint8_t juisteWaardes1[4][uidLength];
+//uint8_t juisteWaardes[4][uidLength] = {{0x04, 0x0B, 0x43, 0x3A, 0xED, 0x4C, 0x81}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80},
+// {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xEB, 0x83, 0xA2, 0x2D, 0x4D, 0x80}};
+uint8_t juisteWaardes2[4][uidLength];
+uint8_t juisteWaardes3[4][uidLength];
 
-
-
-
-uint8_t juisteWaardes2[4][3];
-uint8_t juisteWaardes3[4][3];
-
-
-
-
+Adafruit_PN532 nfc1(pin1,pin2 );
 
 
 
@@ -300,7 +296,7 @@ void puzzel(){
       bl = true;
     }
 
-    //Hier moet de lcd nog aangestuurd worden
+    //Hier moet de lcd nog aangestuurd worden (gewicht)
 
  }
 
