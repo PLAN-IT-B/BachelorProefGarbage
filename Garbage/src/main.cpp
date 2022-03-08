@@ -10,7 +10,7 @@
 //MQTT
 #define SSID          "NETGEAR68"
 #define PWD           "excitedtuba713"
-#define MQTT_SERVER   "192.168.1.20"
+#define MQTT_SERVER   "192.168.1.2"
 #define MQTT_PORT     1883
 #define LED_PIN       2
 
@@ -21,6 +21,7 @@ PubSubClient client(espClient);
 boolean reset;
 boolean energie;
 boolean actief;
+
 
 //code 
 int cinput[4];
@@ -169,22 +170,27 @@ boolean codeTekst;
 
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
-const uint8_t uidLength = 7; 
-uint8_t juisteWaardes1[4][uidLength];
+uint8_t uidLength = 7; 
+uint8_t juisteWaardes1[4][7];
 //uint8_t juisteWaardes[4][uidLength] = {{0x04, 0x0B, 0x43, 0x3A, 0xED, 0x4C, 0x81}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80},
 // {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xEB, 0x83, 0xA2, 0x2D, 0x4D, 0x80}};
-uint8_t juisteWaardes2[4][uidLength];
-uint8_t juisteWaardes3[4][uidLength];
+uint8_t juisteWaardes2[4][7];
+uint8_t juisteWaardes3[4][7];
 
-//Adafruit_PN532 nfc1(pin1,pin2 );
+Adafruit_PN532 nfc1(1,2 );
+Adafruit_PN532 nfc2(1,2 );
+Adafruit_PN532 nfc3(1,2 );
 
 
 
 void scanRFID1(){
   if(energie && actief){
-    TCA9548A(1);
+    TCA9548A(0);
+    uint8_t success;
 
+    success = nfc1.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
 
+    if (success) {
 
     //Check rfid
     bool juist = false;
@@ -217,13 +223,92 @@ void scanRFID1(){
 
   }
 
-}
+}}
 
 void scanRFID2(){
+   if(energie && actief){
+    TCA9548A(1);
+    uint8_t success;
+
+    success = nfc2.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+
+    if (success) {
+
+    //Check rfid
+    bool juist = false;
+      for(int j = 0;j<aantalVuilnis;j++){
+        checkVuilnis = true;
+        for(int i = 0;i<uidLength;i++){
+          if( uid[i]!= juisteWaardes2[j][i]){
+            checkVuilnis == false;
+          }
+        }
+
+        if (checkVuilnis == true){
+          juist = true; //Er is een juiste tag gevonden
+          for(int k = 0;k<uidLength;k++){
+          juisteWaardes2[j][k] == -1;
+          pmd++;
+        }
+
+        }
+
+
+      }
+
+      if(!juist){
+       client.publish("trappenmaar/buffer",straf);
+      }
+      
+
+
+  }
+
+}
 
 }
 
 void scanRFID3(){
+   if(energie && actief){
+    TCA9548A(2);
+    uint8_t success;
+
+    success = nfc3.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+
+    if (success) {
+
+    //Check rfid
+    bool juist = false;
+      for(int j = 0;j<aantalVuilnis;j++){
+        checkVuilnis = true;
+        for(int i = 0;i<uidLength;i++){
+          if( uid[i]!= juisteWaardes3[j][i]){
+            checkVuilnis == false;
+          }
+        }
+
+        if (checkVuilnis == true){
+          juist = true; //Er is een juiste tag gevonden
+          for(int k = 0;k<uidLength;k++){
+          juisteWaardes3[j][k] == -1;
+          p_k++;
+        }
+
+        }
+
+
+
+      }
+
+      if(!juist){
+       client.publish("trappenmaar/buffer",straf);
+      }
+      
+
+
+  }
+
+}
 
 }
 
@@ -343,6 +428,34 @@ void puzzel(){
 
  }
 
+void eindePuzzel(){
+
+  //Tegen flikkeren
+    if(bl ==false){
+      lcd.backlight();
+      bl = true;
+    }
+
+    
+
+lcd.clear();
+lcd.setCursor(2, 0);
+lcd.print("Alles gesorteerd");
+lcd.setCursor(2, 1);
+lcd.print("Definitief gewicht:");
+lcd.setCursor(0, 2);
+lcd.print("Rest     PMD     P&K"); 
+lcd.setCursor 
+
+//Nog afwerken bro
+
+
+
+
+
+}
+
+
 void setup() {
   // lcd init
   lcd.init();
@@ -368,12 +481,55 @@ void setup() {
   //Overige
   char straf;
 
+  //RFID
+  TCA9548A(0);
+  nfc1.begin();
 
+  uint32_t versiondata1 = nfc1.getFirmwareVersion();
+  if (! versiondata1) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata1>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata1>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata1>>8) & 0xFF, DEC);
 
+  nfc1.SAMConfig();
+
+  TCA9548A(1);
+  nfc2.begin();
+
+  uint32_t versiondata2 = nfc2.getFirmwareVersion();
+  if (! versiondata2) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata2>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata2>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata2>>8) & 0xFF, DEC);
+
+  nfc2.SAMConfig();
+
+  TCA9548A(2);
+  nfc3.begin();
+  //Kan weg vanaf hier
+  uint32_t versiondata3 = nfc3.getFirmwareVersion();
+  if (! versiondata3) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata3>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata3>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata3>>8) & 0xFF, DEC);
+  //Tot hier
+  nfc3.SAMConfig();
 
 
   //Ready
-  client.publish("controlpanel/status","Garbage Ready");
+  
   Serial.println("Ready gestuurd");
 }
   
@@ -381,13 +537,8 @@ void loop() {
 
   
 
-  /*Serial.println(reset);
-  Serial.println(energie);
-  Serial.println(actief);
-  Serial.println();*/
-
-  //key 
-  //key = keypad.getKey(); //Vraag de input van de key op
+  
+  key = keypad.getKey(); //Vraag de input van de key op
 
 
 
@@ -410,19 +561,27 @@ void loop() {
     resetPuzzel();
   }
 
+  else if(checkVuilnis){
+    eindePuzzel();
+
+  }
+
   else if(!energie){
     geenEnergie();
   }
 
   else if(energie && actief){
     puzzel();
+    if(p_k == 3 && pmd == 3 && rest == 3){
+      checkVuilnis = true;
+    }
   }
 
   else if(energie){
     enkelEnergie();
   }
  
-  
+  client.publish("controlpanel/status","Garbage Ready");
   
 }
 
