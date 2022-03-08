@@ -17,6 +17,15 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+//Staten
+boolean reset;
+boolean energie;
+boolean actief;
+
+//code 
+int cinput[4];
+int code[] = {-1,-1,-1,-1};
+
 
 long lastMsg = 0;
 char msg[50];
@@ -56,15 +65,29 @@ void callback(char *topic, byte *message, unsigned int length)
     messageTemp += (char)message[i];
   }
 
- /* if (messageTemp == "Eerste 3 cijfers zijn ..."){
-    code[0] = code;
-    code[1] = code;
-    code[2] = code;
+  if (messageTemp == "Reset escaperoom"){
+    reset == true;
   }
 
-  else if(messageTemp == "laatste cijfer is ..."){
-    code[3] = code;
-  }*/
+  else if(messageTemp == "Groen"){
+    energie == true;
+  }
+  else if(messageTemp == "Oranje"){
+    energie == false;
+  }
+  else if(messageTemp == "Rood"){
+    energie == false;
+  }
+
+  else if(messageTemp.indexOf("Wristband-code") > 0){
+    code[0]= messageTemp.charAt(16);
+    code[1]= messageTemp.charAt(17);
+    code[2]= messageTemp.charAt(18);
+  }
+  else if(messageTemp.indexOf("Trein-code") > 0){
+    code[3]= messageTemp.charAt(12);
+    
+  }
 
 }
 
@@ -79,7 +102,10 @@ void reconnect()
     {
       Serial.println("connected");
       // Subscribe
-      client.subscribe("tag/#");
+      client.subscribe("trappenmaar/zone");
+      client.subscribe("wristbands/3cijfers");
+      client.subscribe("treingame/4decijfer");
+      client.subscribe("controlpanel/reset");
     }
     else
     {
@@ -93,10 +119,6 @@ void reconnect()
 }
 
 
-//Staten
-boolean reset = false;
-boolean energie = true;
-boolean actief = false;
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
 int p_k = 0; //Hoeveel papier en karton klaar?
@@ -132,6 +154,7 @@ void TCA9548A(uint8_t bus){
 #define Button_pin1 1
 #define Button_pin2 2
 #define Button_pin3 3
+char* straf;
 
 //Hoeveel vuilnis in 1 vuilbak en check rfid
 int aantalVuilnis;
@@ -187,7 +210,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       //geef fout signaal
+       client.publish("trappenmaar/buffer",straf);
       }
       
 
@@ -206,14 +229,10 @@ void scanRFID3(){
 
 
 
-//code 
-int cinput[4];
-int code[] = {-1,-1,-1,-1};
-
-
 
 void resetPuzzel(){
   setup();
+  reset = false;
 
 }
 
@@ -258,10 +277,11 @@ void enkelEnergie(){
 
       if(check == true){ //Als de code klopt wordt de puzzel actief
         actief = true;
-        //Stuur bericht
+        client.publish("garbage/status","Garbage code is correct ingegeven");
       }
 
-      else{//Foute code stuur foutsignaal
+      else{
+        client.publish("trappenmaar/buffer",straf);
         lcd.setCursor(8,2);
         lcd.print("____");
         c = 8;
@@ -336,22 +356,30 @@ void setup() {
   Wire.begin();
 
   //MQTT
- /* setup_wifi();
+  setup_wifi();
   client.setServer(MQTT_SERVER, MQTT_PORT);
-  client.setCallback(callback);*/
+  client.setCallback(callback);
 
   //Buttons 
   attachInterrupt(digitalPinToInterrupt(Button_pin1), scanRFID1, RISING);
   attachInterrupt(digitalPinToInterrupt(Button_pin2), scanRFID2, RISING);
   attachInterrupt(digitalPinToInterrupt(Button_pin3), scanRFID3, RISING);
 
-  
+  //Overige
+  char straf;
+
+
+
+
+
+  //Ready
+  client.publish("controlpanel/status","Garbage Ready");
+  Serial.println("Ready gestuurd");
 }
   
 void loop() {
 
-  energie = true;
-  reset = false;
+  
 
   /*Serial.println(reset);
   Serial.println(energie);
@@ -365,7 +393,7 @@ void loop() {
 
 
   //MQTT
- /* if (!client.connected())
+  if (!client.connected())
   {
     reconnect();
   }
@@ -375,7 +403,7 @@ void loop() {
   if (now - lastMsg > 5000)
   {
     lastMsg = now;
-  }*/
+  }
   
 
   if(reset){
