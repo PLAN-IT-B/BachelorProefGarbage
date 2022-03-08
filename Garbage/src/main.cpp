@@ -124,7 +124,12 @@ boolean codeTekst;
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
 uint8_t uidLength; 
-uint8_t juisteWaardes1[4][3];  
+uint8_t juisteWaardes1[4][3];
+//juisteWaardes[][] = {0x04, 0x0B, 0x43, 0x3A, 0xED, 0x4C, 0x81}, {0x04 0xF2 0x84 0xA2 0x2D 0x4D 0x80}
+
+
+
+
 uint8_t juisteWaardes2[4][3];
 uint8_t juisteWaardes3[4][3];
 
@@ -189,6 +194,7 @@ int code[] = {-1,-1,-1,-1};
 
 
 void resetPuzzel(){
+  setup();
 
 }
 
@@ -305,10 +311,6 @@ void setup() {
   codeTekst = false;
   c= 8;
   n = 0;
-
-                     
-  
-  
 
   //Serial monitor
   Serial.begin(115200);
