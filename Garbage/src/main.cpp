@@ -445,7 +445,7 @@ lcd.setCursor(2, 1);
 lcd.print("Definitief gewicht:");
 lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
-lcd.setCursor 
+lcd.setCursor(0,3);
 
 //Nog afwerken bro
 
