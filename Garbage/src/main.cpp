@@ -138,8 +138,8 @@ char keys[ROWS][COLS] = {
   {'*','0','#'}
 };
 
-byte rowPins[ROWS] = {34, 27, 26, 32}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {33,35,25}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {18, 5, 17,16}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {4,0,2}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
@@ -548,7 +548,7 @@ void loop() {
   energie = true; //Test
   
   key = keypad.getKey(); //Vraag de input van de key op
-  Serial.println(key);
+
 
 
 
