@@ -123,6 +123,7 @@ void reconnect()
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
 int p_k = 0; //Hoeveel papier en karton klaar?
+bool defGewicht;
 
 //test
 int n = 0;
@@ -445,7 +446,11 @@ lcd.setCursor(2, 1);
 lcd.print("Definitief gewicht:");
 lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
-lcd.setCursor 
+lcd.setCursor(0,3);
+/*if (!defGewicht){
+  lcd.print ...
+} */
+
 
 //Nog afwerken bro
 
@@ -463,6 +468,10 @@ void setup() {
   codeTekst = false;
   c= 8;
   n = 0;
+
+  defGewicht =false;
+
+
 
   //Serial monitor en I2C
   Serial.begin(115200);
@@ -529,7 +538,7 @@ void setup() {
 
 
   //Ready
-  
+  client.publish("controlpanel/status","Garbage Ready");
   Serial.println("Ready gestuurd");
 }
   
@@ -581,7 +590,6 @@ void loop() {
     enkelEnergie();
   }
  
-  client.publish("controlpanel/status","Garbage Ready");
   
 }
 
