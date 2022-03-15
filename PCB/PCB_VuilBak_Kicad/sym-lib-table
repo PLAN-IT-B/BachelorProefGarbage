@@ -1,0 +1,6 @@
+(sym_lib_table
+  (lib (name "ESP32-footprints-Shem-Lib")(type "Legacy")(uri "C:/Users/jarno/Desktop/ESP32-kiCAD-Footprints-master/ESP32-Footprints/ESP32-footprints-Shem-Lib.lib")(options "")(descr ""))
+  (lib (name "espressif-xess")(type "Legacy")(uri "C:/Users/jarno/Desktop/ESP32-kiCAD-Footprints-master/ESP32-Footprints/espressif-xess.lib")(options "")(descr ""))
+  (lib (name "New_Library")(type "KiCad")(uri "${KIPRJMOD}/New_Library.kicad_sym")(options "")(descr ""))
+  (lib (name "Onze_Bib")(type "KiCad")(uri "${KIPRJMOD}/Onze_Bib.kicad_sym")(options "")(descr ""))
+)
