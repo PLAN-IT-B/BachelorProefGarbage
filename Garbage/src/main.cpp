@@ -138,8 +138,8 @@ char keys[ROWS][COLS] = {
   {'*','0','#'}
 };
 
-byte rowPins[ROWS] = {2, 3, 4, 5}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {9,7,8}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {34, 27, 26, 32}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {33,35,25}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
@@ -490,7 +490,7 @@ void setup() {
   //Overige
   char straf;
 
-  //RFID
+ /* //RFID
   TCA9548A(0);
   nfc1.begin();
 
@@ -534,7 +534,7 @@ void setup() {
   Serial.print("Firmware ver. "); Serial.print((versiondata3>>16) & 0xFF, DEC); 
   Serial.print('.'); Serial.println((versiondata3>>8) & 0xFF, DEC);
   //Tot hier
-  nfc3.SAMConfig();
+  nfc3.SAMConfig();*/
 
 
   //Ready
@@ -545,10 +545,10 @@ void setup() {
 void loop() {
 
   
-
+  energie = true; //Test
   
   key = keypad.getKey(); //Vraag de input van de key op
-
+  Serial.println(key);
 
 
 
