@@ -471,6 +471,12 @@ lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
 
 if (!defGewicht){
+
+//Lees gewicht
+
+
+
+
   lcd.setCursor(0,3);
   lcd.print(restG);
   lcd.setCursor(9,3);
