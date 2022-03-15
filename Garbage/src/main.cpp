@@ -21,11 +21,12 @@ PubSubClient client(espClient);
 boolean reset;
 boolean energie;
 boolean actief;
+boolean checkVuilnisTotaal;
 
 
 //code 
 int cinput[4];
-int code[] = {-1,-1,-1,-1};
+int code[] = {1,1,1,1}; //Voorlopig pas aan naar -1, ...
 
 
 long lastMsg = 0;
@@ -123,10 +124,11 @@ void reconnect()
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
 int p_k = 0; //Hoeveel papier en karton klaar?
-bool defGewicht;
-
-//test
-int n = 0;
+int restG; //gewicht rest def
+int pmdG; //gewicht pmd def
+int p_kG; //gewicht papier en karton def
+bool defGewicht = false;
+int n; //Hoeveel vuil?
 
 //Keypad
 const byte ROWS = 4; //four rows
@@ -199,7 +201,7 @@ void scanRFID1(){
         checkVuilnis = true;
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes1[j][i]){
-            checkVuilnis == false;
+            checkVuilnis = false;
           }
         }
 
@@ -364,6 +366,13 @@ void enkelEnergie(){
       if(check == true){ //Als de code klopt wordt de puzzel actief
         actief = true;
         client.publish("garbage/status","Garbage code is correct ingegeven");
+        lcd.clear();
+        lcd.setCursor(4,1);
+        lcd.print("Code correct");
+        delay(1000);
+        lcd.clear();
+        codeTekst = false;
+
       }
 
       else{
@@ -386,13 +395,13 @@ void enkelEnergie(){
    
 
     else if(key == '*'){ //Als * (terug) wordt ingevuld
-      
+        if(c>8){
         //Ga 1 terug, vervang het getal door _ en vervang de code door 0 (standaard getal in rij)
         c--;
         lcd.setCursor(c,2);
         lcd.print("_");
         cinput[c-8] = 0;
-
+        }
 
       
     }
@@ -425,7 +434,21 @@ void puzzel(){
       bl = true;
     }
 
-    //Hier moet de lcd nog aangestuurd worden (gewicht)
+    
+
+    if (codeTekst == false){ //LCD instellen
+    lcd.setCursor(0,0);
+    lcd.print("Zoek vuilnis, scan");
+    lcd.setCursor(0,1);
+    lcd.print("in het juiste bakje");
+    lcd.setCursor(0,2);
+    lcd.print("en gooi het in de");
+    lcd.setCursor(0,3);
+    lcd.print("correcte vuilnisbak");
+    codeTekst = true;
+    }
+
+
 
  }
 
@@ -439,22 +462,25 @@ void eindePuzzel(){
 
     
 
-lcd.clear();
+
 lcd.setCursor(2, 0);
 lcd.print("Alles gesorteerd");
-lcd.setCursor(2, 1);
+lcd.setCursor(1, 1);
 lcd.print("Definitief gewicht:");
 lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
-lcd.setCursor(0,3);
-/*if (!defGewicht){
-  lcd.print ...
-} */
+
+if (!defGewicht){
+  lcd.setCursor(0,3);
+  lcd.print(restG);
+  lcd.setCursor(9,3);
+  lcd.print(pmdG);
+  lcd.setCursor(17,3);
+  lcd.print(p_kG);
 
 
-//Nog afwerken bro
-
-
+  defGewicht = true;
+} 
 
 
 
@@ -467,9 +493,10 @@ void setup() {
   lcd.backlight();
   codeTekst = false;
   c= 8;
-  n = 0;
+  n = 4;
 
   defGewicht =false;
+  checkVuilnisTotaal = false;
 
 
 
@@ -570,7 +597,7 @@ void loop() {
     resetPuzzel();
   }
 
-  else if(checkVuilnis){
+  else if(checkVuilnisTotaal){
     eindePuzzel();
 
   }
@@ -581,8 +608,9 @@ void loop() {
 
   else if(energie && actief){
     puzzel();
-    if(p_k == 3 && pmd == 3 && rest == 3){
-      checkVuilnis = true;
+    if(p_k == n && pmd == n && rest == n){
+      lcd.clear();
+      checkVuilnisTotaal = true;
     }
   }
 
