@@ -7,6 +7,8 @@
 #include <Adafruit_PN532.h>
 #include "HX711.h"
 
+
+
 //MQTT
 #define SSID          "NETGEAR68"
 #define PWD           "excitedtuba713"
@@ -91,6 +93,8 @@ void callback(char *topic, byte *message, unsigned int length)
     
   }
 
+
+
 }
 
 void reconnect()
@@ -155,9 +159,9 @@ void TCA9548A(uint8_t bus){
 }
 
 //Varia
-#define Button_pin1 1
-#define Button_pin2 2
-#define Button_pin3 3
+#define Button_pin1 27
+#define Button_pin2 26
+#define Button_pin3 25
 char* straf;
 
 //Hoeveel vuilnis in 1 vuilbak en check rfid
@@ -180,21 +184,22 @@ uint8_t juisteWaardes1[4][7];
 uint8_t juisteWaardes2[4][7];
 uint8_t juisteWaardes3[4][7];
 
-Adafruit_PN532 nfc1(1,2 );
-Adafruit_PN532 nfc2(1,2 );
-Adafruit_PN532 nfc3(1,2 );
+Adafruit_PN532 nfc(33,32);
 
 
 
 void scanRFID1(){
   if(energie && actief){
-    TCA9548A(0);
-    uint8_t success;
+    TCA9548A(2);
+    uint8_t success = false;
+   
 
-    success = nfc1.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+   
+    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,100);
 
+  
     if (success) {
-
+      Serial.print("Succesvol gelezen");
     //Check rfid
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
@@ -230,12 +235,13 @@ void scanRFID1(){
 
 void scanRFID2(){
    if(energie && actief){
-    TCA9548A(1);
+    TCA9548A(3);
     uint8_t success;
 
-    success = nfc2.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,100);
 
     if (success) {
+      Serial.print("Succesvol gelezen");
 
     //Check rfid
     bool juist = false;
@@ -273,12 +279,13 @@ void scanRFID2(){
 
 void scanRFID3(){
    if(energie && actief){
-    TCA9548A(2);
+    TCA9548A(4);
     uint8_t success;
-
-    success = nfc3.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+    nfc.startPassiveTargetIDDetection(PN532_MIFARE_ISO14443A);
+    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
 
     if (success) {
+      Serial.print("Succesvol gelezen");
 
     //Check rfid
     bool juist = false;
@@ -434,7 +441,7 @@ void puzzel(){
       bl = true;
     }
 
-    
+    //Serial.println("In puzzel");
 
     if (codeTekst == false){ //LCD instellen
     lcd.setCursor(0,0);
@@ -449,6 +456,16 @@ void puzzel(){
     }
 
 
+
+  if(digitalRead(Button_pin1) == HIGH){
+    scanRFID1();
+  }
+  if(digitalRead(Button_pin2) == HIGH){
+    scanRFID2();
+  }
+  if(digitalRead(Button_pin3) == HIGH){
+    scanRFID3();
+  }
 
  }
 
@@ -500,9 +517,17 @@ void setup() {
   codeTekst = false;
   c= 8;
   n = 4;
+  actief = true;
 
   defGewicht =false;
   checkVuilnisTotaal = false;
+
+  //Button
+  pinMode(Button_pin1, INPUT);
+  pinMode(Button_pin2, INPUT);
+  pinMode(Button_pin3, INPUT);
+
+
 
 
 
@@ -515,49 +540,52 @@ void setup() {
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);
 
-  //Buttons 
-  attachInterrupt(digitalPinToInterrupt(Button_pin1), scanRFID1, RISING);
-  attachInterrupt(digitalPinToInterrupt(Button_pin2), scanRFID2, RISING);
-  attachInterrupt(digitalPinToInterrupt(Button_pin3), scanRFID3, RISING);
+
 
   //Overige
   char straf;
 
- /* //RFID
-  TCA9548A(0);
-  nfc1.begin();
-
-  uint32_t versiondata1 = nfc1.getFirmwareVersion();
-  if (! versiondata1) {
-    Serial.print("Didn't find PN53x board");
-    while (1); // halt
-  }
-  // Got ok data, print it out!
-  Serial.print("Found chip PN5"); Serial.println((versiondata1>>24) & 0xFF, HEX); 
-  Serial.print("Firmware ver. "); Serial.print((versiondata1>>16) & 0xFF, DEC); 
-  Serial.print('.'); Serial.println((versiondata1>>8) & 0xFF, DEC);
-
-  nfc1.SAMConfig();
-
-  TCA9548A(1);
-  nfc2.begin();
-
-  uint32_t versiondata2 = nfc2.getFirmwareVersion();
-  if (! versiondata2) {
-    Serial.print("Didn't find PN53x board");
-    while (1); // halt
-  }
-  // Got ok data, print it out!
-  Serial.print("Found chip PN5"); Serial.println((versiondata2>>24) & 0xFF, HEX); 
-  Serial.print("Firmware ver. "); Serial.print((versiondata2>>16) & 0xFF, DEC); 
-  Serial.print('.'); Serial.println((versiondata2>>8) & 0xFF, DEC);
-
-  nfc2.SAMConfig();
-
+  //RFID
   TCA9548A(2);
-  nfc3.begin();
+   nfc.begin();
+
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
+  
+
+
+  TCA9548A(3);
+   nfc.begin();
+
+   versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
+    Serial.print("Didn't find PN53x board");
+    while (1); // halt
+  }
+  // Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
+  
+  
+
+  /*TCA9548A(2);
+  nfc.begin();
   //Kan weg vanaf hier
-  uint32_t versiondata3 = nfc3.getFirmwareVersion();
+  uint32_t versiondata3 = nfc.getFirmwareVersion();
   if (! versiondata3) {
     Serial.print("Didn't find PN53x board");
     while (1); // halt
@@ -567,11 +595,11 @@ void setup() {
   Serial.print("Firmware ver. "); Serial.print((versiondata3>>16) & 0xFF, DEC); 
   Serial.print('.'); Serial.println((versiondata3>>8) & 0xFF, DEC);
   //Tot hier
-  nfc3.SAMConfig();*/
+  nfc.SAMConfig();*/
 
 
   //Ready
-  client.publish("controlpanel/status","Garbage Ready");
+  client.publish("controlpanel/status","GarbageReady");
   Serial.println("Ready gestuurd");
 }
   
