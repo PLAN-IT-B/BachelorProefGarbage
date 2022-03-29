@@ -6,6 +6,7 @@
 #include "Keypad.h"
 #include <Adafruit_PN532.h>
 #include "HX711.h"
+#include <Tone32.h>
 
 
 
@@ -163,6 +164,7 @@ void TCA9548A(uint8_t bus){
 #define Button_pin2 26
 #define Button_pin3 25
 char* straf;
+#define sound 14
 
 //Hoeveel vuilnis in 1 vuilbak en check rfid
 int aantalVuilnis;
@@ -186,12 +188,47 @@ uint8_t juisteWaardes3[4][7];
 
 Adafruit_PN532 nfc(33,32);
 
+void schrijfScannen(){
+  lcd.clear();
+  lcd.setCursor(7,1);
+  lcd.print("Scannen ...");
+  codeTekst = false;
+}
 
+void failureSound(){
+  tone(sound,NOTE_D5,100,0);
+noTone(sound,0);
+delay(50);
+tone(sound,NOTE_D5,100,0);
+noTone(sound,0);
+delay(10);
+tone(sound,NOTE_D5,300,0);
+noTone(sound,0);
+delay(10);
+tone(sound,NOTE_C3,300,0);
+noTone(sound,0);
+}
+
+void succesSound(){
+tone(sound,NOTE_D5,100,0);
+noTone(sound,0);
+delay(50);
+tone(sound,NOTE_D5,100,0);
+noTone(sound,0);
+delay(10);
+tone(sound,NOTE_D5,300,0);
+noTone(sound,0);
+delay(10);
+tone(sound,NOTE_A5,300,0);
+noTone(sound,0);
+}
 
 void scanRFID1(){
   if(energie && actief){
+    Serial.println("Scanning ...");
     TCA9548A(2);
     uint8_t success = false;
+    schrijfScannen();
    
 
    
@@ -376,17 +413,20 @@ void enkelEnergie(){
         lcd.clear();
         lcd.setCursor(4,1);
         lcd.print("Code correct");
-        delay(1000);
+        succesSound();
+        delay(500);
         lcd.clear();
         codeTekst = false;
 
       }
+      
 
       else{
         client.publish("trappenmaar/buffer",straf);
         lcd.setCursor(8,2);
         lcd.print("____");
         c = 8;
+        failureSound();
         
 
 
@@ -460,12 +500,12 @@ void puzzel(){
   if(digitalRead(Button_pin1) == HIGH){
     scanRFID1();
   }
-  if(digitalRead(Button_pin2) == HIGH){
+ /* if(digitalRead(Button_pin2) == HIGH){
     scanRFID2();
   }
   if(digitalRead(Button_pin3) == HIGH){
     scanRFID3();
-  }
+  }*/
 
  }
 
@@ -517,7 +557,6 @@ void setup() {
   codeTekst = false;
   c= 8;
   n = 4;
-  actief = true;
 
   defGewicht =false;
   checkVuilnisTotaal = false;
@@ -564,7 +603,7 @@ void setup() {
   
 
 
-  TCA9548A(3);
+  /*TCA9548A(3);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
