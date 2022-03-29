@@ -181,7 +181,7 @@ boolean codeTekst;
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
 uint8_t uidLength = 7; 
-uint8_t juisteWaardes1[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xEB, 0x83, 0xA2, 0x2D, 0x4D, 0x80}};
+uint8_t juisteWaardes1[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xEB, 0x83, 0xA2, 0x2D, 0x4D, 0x80}};
 uint8_t juisteWaardes2[4][7];
 uint8_t juisteWaardes3[4][7];
 
@@ -349,7 +349,7 @@ void scanRFID1(){
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
-        Serial.println("Check een waarde");
+      
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes1[j][i]){
             checkVuilnis = false;
@@ -359,8 +359,7 @@ void scanRFID1(){
         if (checkVuilnis == true){
           juist = true; //Er is een juiste tag gevonden
           for(int k = 0;k<uidLength;k++){
-          Serial.println(j);
-          Serial.println(k);
+          
           juisteWaardes1[j][k] = 0;
         
         }
@@ -600,8 +599,8 @@ void enkelEnergie(){
   
     
     else{ //Als er iets anders (cijfer) wordt ingedrukt
-      Serial.println("Cijfer");
-      Serial.println(c);
+      
+     
 
       if(c<12){ //Vul het getal in en schuif 1 plaats op.
       lcd.setCursor(c,2);
