@@ -1,4 +1,8 @@
 (sym_lib_table
   (lib (name "Onze_Bib")(type "KiCad")(uri "${KIPRJMOD}/Onze_Bib.kicad_sym")(options "")(descr ""))
   (lib (name "switch-misc")(type "Legacy")(uri "${KIPRJMOD}/switch-misc/switch-misc.lib")(options "")(descr ""))
+  (lib (name "ESP32-WROOM-32")(type "Legacy")(uri "${KIPRJMOD}/ESP32-WROOM-32.lib")(options "")(descr ""))
+  (lib (name "degson")(type "Legacy")(uri "${KIPRJMOD}/degson.lib")(options "")(descr ""))
+  (lib (name "USB3090-XX-X_REVE")(type "Legacy")(uri "${KIPRJMOD}/micro_usb/USB3090-XX-X_REVE.lib")(options "")(descr ""))
+  (lib (name "TCA9548APWR")(type "Legacy")(uri "${KIPRJMOD}/TCA/TCA9548APWR.lib")(options "")(descr ""))
 )
