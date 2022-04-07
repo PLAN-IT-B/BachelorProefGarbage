@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="E">
   <design>
-    <source>C:\Users\jarno\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad\PCB_VuilBak.kicad_sch</source>
-    <date>29/03/2022 13:29:13</date>
-    <tool>Eeschema (6.0.2)</tool>
+    <source>C:\Users\timme\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad\PCB_VuilBak.kicad_sch</source>
+    <date>5/04/2022 14:46:51</date>
+    <tool>Eeschema (6.0.4)</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title/>
@@ -26,7 +26,7 @@
   <components>
     <comp ref="C1">
       <value>10u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -35,7 +35,7 @@
     </comp>
     <comp ref="C2">
       <value>1u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -44,7 +44,7 @@
     </comp>
     <comp ref="C3">
       <value>10u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C_Polarized" description="Polarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -53,7 +53,7 @@
     </comp>
     <comp ref="C4">
       <value>22u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -62,7 +62,7 @@
     </comp>
     <comp ref="C5">
       <value>10u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C_Polarized" description="Polarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -71,12 +71,21 @@
     </comp>
     <comp ref="C6">
       <value>0.1u</value>
-      <footprint>Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>22ebb2f9-59cf-41c9-8157-e87119758c81</tstamps>
+    </comp>
+    <comp ref="C7">
+      <value>0.1u</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fb20fc4d-0c6b-4acc-9025-b3a83ce6f856</tstamps>
     </comp>
     <comp ref="Q1">
       <value>2N7002</value>
@@ -100,7 +109,7 @@
     </comp>
     <comp ref="R1">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -109,7 +118,7 @@
     </comp>
     <comp ref="R2">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -118,7 +127,7 @@
     </comp>
     <comp ref="R3">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -127,7 +136,7 @@
     </comp>
     <comp ref="R4">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -136,7 +145,7 @@
     </comp>
     <comp ref="R5">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -145,7 +154,7 @@
     </comp>
     <comp ref="R6">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -154,7 +163,7 @@
     </comp>
     <comp ref="R7">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -163,7 +172,7 @@
     </comp>
     <comp ref="R8">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -172,7 +181,7 @@
     </comp>
     <comp ref="R11">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -181,7 +190,7 @@
     </comp>
     <comp ref="R12">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -190,7 +199,7 @@
     </comp>
     <comp ref="R13">
       <value>10k</value>
-      <footprint>Resistor_SMD:R_2512_6332Metric_Pad1.40x3.35mm_HandSolder</footprint>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
       <libsource lib="Device" part="R" description="Resistor"/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -199,7 +208,7 @@
     </comp>
     <comp ref="S1">
       <value>DTE6</value>
-      <footprint>switch:SW_1571527-1</footprint>
+      <footprint>1-1825910-4:TE_1-1825910-4</footprint>
       <libsource lib="switch-misc" part="DTE6" description=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -208,7 +217,7 @@
     </comp>
     <comp ref="S2">
       <value>DTE6</value>
-      <footprint>switch:SW_1571527-1</footprint>
+      <footprint>1-1825910-4:TE_1-1825910-4</footprint>
       <libsource lib="switch-misc" part="DTE6" description=""/>
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
@@ -259,7 +268,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>1cbdce3d-c536-4541-af32-c4359e5e4391 dc05e575-fdfb-4c0e-841e-05c46238a0f0 7c79d6f6-a416-4be7-abc2-ee0c88cea403 11b1add3-e4dd-4059-bcd0-d3dcccc9eb51</tstamps>
+      <tstamps>7c79d6f6-a416-4be7-abc2-ee0c88cea403 dc05e575-fdfb-4c0e-841e-05c46238a0f0 1cbdce3d-c536-4541-af32-c4359e5e4391 11b1add3-e4dd-4059-bcd0-d3dcccc9eb51</tstamps>
     </comp>
     <comp ref="X2">
       <value>DG3XX-04-3.5</value>
@@ -268,7 +277,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>f7d711df-de5d-44c7-b5eb-c102bf0684cb ac0ceb59-7550-417d-adce-23bbcefe9155 fe08d186-4bd7-41f3-b1a3-8d70e97a99c5 69f70eeb-2974-499b-8d58-aea833ea3217</tstamps>
+      <tstamps>f7d711df-de5d-44c7-b5eb-c102bf0684cb fe08d186-4bd7-41f3-b1a3-8d70e97a99c5 ac0ceb59-7550-417d-adce-23bbcefe9155 69f70eeb-2974-499b-8d58-aea833ea3217</tstamps>
     </comp>
     <comp ref="X3">
       <value>DG3XX-04-3.5</value>
@@ -277,7 +286,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>6ca055d1-6519-4109-91bd-04a294edb0bf 616ebc47-46b9-479c-ad3f-fac2acd67863 2e4274eb-56ba-4c4e-b497-5b024203380a 0e9d1c42-b91b-45e2-8434-87658557d15a</tstamps>
+      <tstamps>6ca055d1-6519-4109-91bd-04a294edb0bf 2e4274eb-56ba-4c4e-b497-5b024203380a 616ebc47-46b9-479c-ad3f-fac2acd67863 0e9d1c42-b91b-45e2-8434-87658557d15a</tstamps>
     </comp>
     <comp ref="X4">
       <value>DG3XX-04-3.5</value>
@@ -286,7 +295,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>d1b3efd0-cb71-4c32-a195-4520aa6d663e b9568659-5667-4546-9614-dac4f25a93a6 251626a5-0b0d-40a7-af55-d62ed7493e98 24df1943-bcca-4354-ab90-781579078f03</tstamps>
+      <tstamps>d1b3efd0-cb71-4c32-a195-4520aa6d663e 251626a5-0b0d-40a7-af55-d62ed7493e98 b9568659-5667-4546-9614-dac4f25a93a6 24df1943-bcca-4354-ab90-781579078f03</tstamps>
     </comp>
     <comp ref="X5">
       <value>DG3XX-03-3.5</value>
@@ -295,7 +304,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>beab678d-42f8-4ab3-af3b-ff0141a18562 82dc1800-1940-4956-bb77-32733a6563e9 431b4bc5-e012-484a-b433-7cc80847058f</tstamps>
+      <tstamps>82dc1800-1940-4956-bb77-32733a6563e9 beab678d-42f8-4ab3-af3b-ff0141a18562 431b4bc5-e012-484a-b433-7cc80847058f</tstamps>
     </comp>
     <comp ref="X6">
       <value>DG3XX-07-3.5</value>
@@ -304,7 +313,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>9d3b7664-51bf-4fb9-b7b8-43869a6820ca 7bbfe3c2-7dab-459d-9c0f-87f4d23f49a1 fd32a33e-6513-4c26-9927-71d2e0723592 52d473bf-9499-4953-8923-ab5a75266457 60fbd55f-5e03-4f7f-bc5e-f2407eae6869 369975a5-acc6-4b70-917d-bdb1e79164c1 2ce56d95-fa18-4032-959f-115bbb55a684</tstamps>
+      <tstamps>52d473bf-9499-4953-8923-ab5a75266457 60fbd55f-5e03-4f7f-bc5e-f2407eae6869 fd32a33e-6513-4c26-9927-71d2e0723592 9d3b7664-51bf-4fb9-b7b8-43869a6820ca 369975a5-acc6-4b70-917d-bdb1e79164c1 7bbfe3c2-7dab-459d-9c0f-87f4d23f49a1 2ce56d95-fa18-4032-959f-115bbb55a684</tstamps>
     </comp>
     <comp ref="X7">
       <value>DG3XX-04-3.5</value>
@@ -313,7 +322,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>c5b7e84d-f451-4324-83eb-91286e464943 c9e50c71-3afe-4b18-a62d-1759a5d36868 bf577549-30be-4179-8a46-6b2737792a34 31237410-4067-415c-b5e8-cee9eb06f987</tstamps>
+      <tstamps>c9e50c71-3afe-4b18-a62d-1759a5d36868 bf577549-30be-4179-8a46-6b2737792a34 c5b7e84d-f451-4324-83eb-91286e464943 31237410-4067-415c-b5e8-cee9eb06f987</tstamps>
     </comp>
     <comp ref="X8">
       <value>DG3XX-04-3.5</value>
@@ -331,7 +340,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>ca122121-4dcd-47ae-b5e9-dfc3e793d461 856e0fac-c4c8-4616-a460-8cd00c22e3e0 aaaf6bbf-e7e8-4966-85b0-313ef48c17a2 5625a999-70f0-428f-96d1-9bbe4001227b</tstamps>
+      <tstamps>aaaf6bbf-e7e8-4966-85b0-313ef48c17a2 856e0fac-c4c8-4616-a460-8cd00c22e3e0 ca122121-4dcd-47ae-b5e9-dfc3e793d461 5625a999-70f0-428f-96d1-9bbe4001227b</tstamps>
     </comp>
     <comp ref="X10">
       <value>DG3XX-04-3.5</value>
@@ -340,7 +349,7 @@
       <property name="Sheetname" value=""/>
       <property name="Sheetfile" value="PCB_VuilBak.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
-      <tstamps>c1f99eff-895e-4738-a560-610213e0cad1 fcd7ffcd-a14e-4b99-aeee-7cd0ba4d08a3 b5129bd5-9317-4c64-96d9-bad4c7428f42 6526fbf1-51fb-460f-b225-825e8be7f46d</tstamps>
+      <tstamps>fcd7ffcd-a14e-4b99-aeee-7cd0ba4d08a3 b5129bd5-9317-4c64-96d9-bad4c7428f42 c1f99eff-895e-4738-a560-610213e0cad1 6526fbf1-51fb-460f-b225-825e8be7f46d</tstamps>
     </comp>
     <comp ref="X11">
       <value>DG3XX-02-3.5</value>
@@ -653,22 +662,22 @@
   </libparts>
   <libraries>
     <library logical="Device">
-      <uri>D:\KiCad\6.0\share\kicad\symbols\/Device.kicad_sym</uri>
+      <uri>C:\Program Files\KiCad\6.0\share\kicad\symbols\/Device.kicad_sym</uri>
     </library>
     <library logical="Onze_Bib">
-      <uri>C:\Users\jarno\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/Onze_Bib.kicad_sym</uri>
+      <uri>C:\Users\timme\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/Onze_Bib.kicad_sym</uri>
     </library>
     <library logical="Regulator_Linear">
-      <uri>D:\KiCad\6.0\share\kicad\symbols\/Regulator_Linear.kicad_sym</uri>
+      <uri>C:\Program Files\KiCad\6.0\share\kicad\symbols\/Regulator_Linear.kicad_sym</uri>
     </library>
     <library logical="Transistor_FET">
-      <uri>D:\KiCad\6.0\share\kicad\symbols\/Transistor_FET.kicad_sym</uri>
+      <uri>C:\Program Files\KiCad\6.0\share\kicad\symbols\/Transistor_FET.kicad_sym</uri>
     </library>
     <library logical="degson">
-      <uri>C:\Users\jarno\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/degson.lib</uri>
+      <uri>C:\Users\timme\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/degson.lib</uri>
     </library>
     <library logical="switch-misc">
-      <uri>C:\Users\jarno\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/switch-misc/switch-misc.lib</uri>
+      <uri>C:\Users\timme\Documents\GitHub\BachelorProefGarbage\PCB\PCB_VuilBak_Kicad/switch-misc/switch-misc.lib</uri>
     </library>
   </libraries>
   <nets>
@@ -700,8 +709,8 @@
       <node ref="U1" pin="1" pinfunction="VCC" pintype="power_out"/>
       <node ref="U2" pin="3" pinfunction="VI" pintype="power_in"/>
       <node ref="X10" pin="1" pinfunction="KL" pintype="passive"/>
-      <node ref="X2" pin="1" pinfunction="KL" pintype="passive"/>
-      <node ref="X3" pin="1" pinfunction="KL" pintype="passive"/>
+      <node ref="X2" pin="4" pinfunction="KL" pintype="passive"/>
+      <node ref="X3" pin="4" pinfunction="KL" pintype="passive"/>
       <node ref="X4" pin="1" pinfunction="KL" pintype="passive"/>
       <node ref="X5" pin="1" pinfunction="KL" pintype="passive"/>
       <node ref="X7" pin="1" pinfunction="KL" pintype="passive"/>
@@ -715,6 +724,7 @@
       <node ref="C4" pin="1" pintype="passive"/>
       <node ref="C5" pin="2" pintype="passive"/>
       <node ref="C6" pin="1" pintype="passive"/>
+      <node ref="C7" pin="1" pintype="passive"/>
       <node ref="R11" pin="2" pintype="passive"/>
       <node ref="R12" pin="2" pintype="passive"/>
       <node ref="R13" pin="2" pintype="passive"/>
@@ -754,29 +764,29 @@
       <node ref="U4" pin="39_9" pinfunction="GND" pintype="power_in"/>
       <node ref="X1" pin="1" pinfunction="KL" pintype="passive"/>
       <node ref="X10" pin="4" pinfunction="KL" pintype="passive"/>
-      <node ref="X2" pin="4" pinfunction="KL" pintype="passive"/>
-      <node ref="X3" pin="4" pinfunction="KL" pintype="passive"/>
+      <node ref="X2" pin="1" pinfunction="KL" pintype="passive"/>
+      <node ref="X3" pin="1" pinfunction="KL" pintype="passive"/>
       <node ref="X4" pin="4" pinfunction="KL" pintype="passive"/>
-      <node ref="X5" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X5" pin="2" pinfunction="KL" pintype="passive"/>
       <node ref="X7" pin="4" pinfunction="KL" pintype="passive"/>
       <node ref="X8" pin="4" pinfunction="KL" pintype="passive"/>
       <node ref="X9" pin="4" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="4" name="GPIO 5">
       <node ref="U4" pin="29" pinfunction="IO5" pintype="bidirectional"/>
-      <node ref="X6" pin="4" pinfunction="KL" pintype="passive"/>
+      <node ref="X6" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="5" name="GPIO 16">
       <node ref="U4" pin="27" pinfunction="IO16" pintype="bidirectional"/>
-      <node ref="X6" pin="6" pinfunction="KL" pintype="passive"/>
+      <node ref="X6" pin="5" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="6" name="GPIO 17">
       <node ref="U4" pin="28" pinfunction="IO17" pintype="bidirectional"/>
-      <node ref="X6" pin="5" pinfunction="KL" pintype="passive"/>
+      <node ref="X6" pin="4" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="7" name="GPIO 18">
       <node ref="U4" pin="30" pinfunction="IO18" pintype="bidirectional"/>
-      <node ref="X6" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X6" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="8" name="GPIO 19">
       <node ref="U4" pin="31" pinfunction="IO19" pintype="bidirectional"/>
@@ -784,7 +794,7 @@
     </net>
     <net code="9" name="GPIO 23">
       <node ref="U4" pin="37" pinfunction="IO23" pintype="bidirectional"/>
-      <node ref="X6" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X5" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="10" name="GPIO2">
       <node ref="U4" pin="24" pinfunction="IO2" pintype="bidirectional"/>
@@ -792,11 +802,11 @@
     </net>
     <net code="11" name="GPIO4">
       <node ref="U4" pin="26" pinfunction="IO4" pintype="bidirectional"/>
-      <node ref="X4" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X6" pin="6" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="12" name="GPIO12">
       <node ref="U4" pin="14" pinfunction="IO12" pintype="bidirectional"/>
-      <node ref="X4" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X4" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="13" name="GPIO13">
       <node ref="U4" pin="16" pinfunction="IO13" pintype="bidirectional"/>
@@ -804,37 +814,38 @@
     </net>
     <net code="14" name="GPIO14">
       <node ref="U4" pin="13" pinfunction="IO14" pintype="bidirectional"/>
-      <node ref="X5" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X4" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="15" name="GPIO15">
       <node ref="U4" pin="23" pinfunction="IO15" pintype="bidirectional"/>
       <node ref="X3" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="16" name="GPIO25">
-      <node ref="R13" pin="1" pintype="passive"/>
-      <node ref="U4" pin="10" pinfunction="IO25" pintype="bidirectional"/>
-      <node ref="X13" pin="2" pinfunction="KL" pintype="passive"/>
-    </net>
-    <net code="17" name="GPIO26">
-      <node ref="R12" pin="1" pintype="passive"/>
-      <node ref="U4" pin="11" pinfunction="IO26" pintype="bidirectional"/>
-      <node ref="X12" pin="2" pinfunction="KL" pintype="passive"/>
-    </net>
-    <net code="18" name="GPIO27">
       <node ref="R11" pin="1" pintype="passive"/>
-      <node ref="U4" pin="12" pinfunction="IO27" pintype="bidirectional"/>
+      <node ref="U4" pin="10" pinfunction="IO25" pintype="bidirectional"/>
       <node ref="X11" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
-    <net code="19" name="GPIO32">
-      <node ref="U4" pin="8" pinfunction="IO32" pintype="bidirectional"/>
+    <net code="17" name="GPIO26">
+      <node ref="U4" pin="11" pinfunction="IO26" pintype="bidirectional"/>
       <node ref="X2" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
-    <net code="20" name="GPIO33">
-      <node ref="U4" pin="9" pinfunction="IO33" pintype="bidirectional"/>
+    <net code="18" name="GPIO27">
+      <node ref="U4" pin="12" pinfunction="IO27" pintype="bidirectional"/>
       <node ref="X2" pin="3" pinfunction="KL" pintype="passive"/>
+    </net>
+    <net code="19" name="GPIO32">
+      <node ref="R12" pin="1" pintype="passive"/>
+      <node ref="U4" pin="8" pinfunction="IO32" pintype="bidirectional"/>
+      <node ref="X12" pin="2" pinfunction="KL" pintype="passive"/>
+    </net>
+    <net code="20" name="GPIO33">
+      <node ref="R13" pin="1" pintype="passive"/>
+      <node ref="U4" pin="9" pinfunction="IO33" pintype="bidirectional"/>
+      <node ref="X13" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="21" name="Net-(C2-Pad1)">
       <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="C7" pin="2" pintype="passive"/>
       <node ref="R7" pin="1" pintype="passive"/>
       <node ref="S1" pin="1" pinfunction="S" pintype="passive"/>
       <node ref="S1" pin="2" pinfunction="S" pintype="passive"/>
@@ -848,19 +859,19 @@
     </net>
     <net code="23" name="RX">
       <node ref="U4" pin="34" pinfunction="RXD0" pintype="bidirectional"/>
-      <node ref="X1" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X1" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="24" name="SC5">
       <node ref="U3" pin="16" pinfunction="SC5" pintype="bidirectional"/>
-      <node ref="X7" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X7" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="25" name="SC6">
       <node ref="U3" pin="18" pinfunction="SC6" pintype="bidirectional"/>
-      <node ref="X8" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X8" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="26" name="SC7">
       <node ref="U3" pin="20" pinfunction="SC7" pintype="bidirectional"/>
-      <node ref="X9" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X9" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="27" name="SCL_ESP">
       <node ref="Q1" pin="2" pinfunction="S" pintype="passive"/>
@@ -876,15 +887,15 @@
     </net>
     <net code="29" name="SD5">
       <node ref="U3" pin="15" pinfunction="SD5" pintype="bidirectional"/>
-      <node ref="X7" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X7" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="30" name="SD6">
       <node ref="U3" pin="17" pinfunction="SD6" pintype="bidirectional"/>
-      <node ref="X8" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X8" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="31" name="SD7">
       <node ref="U3" pin="19" pinfunction="SD7" pintype="bidirectional"/>
-      <node ref="X9" pin="2" pinfunction="KL" pintype="passive"/>
+      <node ref="X9" pin="3" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="32" name="SDA_ESP">
       <node ref="Q2" pin="2" pinfunction="S" pintype="passive"/>
@@ -900,7 +911,7 @@
     </net>
     <net code="34" name="TX">
       <node ref="U4" pin="35" pinfunction="TXD0" pintype="bidirectional"/>
-      <node ref="X1" pin="3" pinfunction="KL" pintype="passive"/>
+      <node ref="X1" pin="2" pinfunction="KL" pintype="passive"/>
     </net>
     <net code="35" name="unconnected-(U1-Pad2)">
       <node ref="U1" pin="2" pinfunction="D-" pintype="no_connect"/>

@@ -238,7 +238,7 @@ void setup() {
   
 
 
-  TCA9548A(2);
+  TCA9548A(7);
    nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
