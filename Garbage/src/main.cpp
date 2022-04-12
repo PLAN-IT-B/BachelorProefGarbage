@@ -71,17 +71,17 @@ void callback(char *topic, byte *message, unsigned int length)
   }
 
   if (messageTemp == "Reset escaperoom"){
-    reset == true;
+    //reset = true;
   }
 
   else if(messageTemp == "Groen"){
-    energie == true;
+    energie = true;
   }
   else if(messageTemp == "Oranje"){
-    energie == false;
+    energie = false;
   }
   else if(messageTemp == "Rood"){
-    energie == false;
+    energie = false;
   }
 
   else if(messageTemp.indexOf("Wristband-code") > 0){
@@ -186,7 +186,7 @@ uint8_t juisteWaardes2[4][7];
 uint8_t juisteWaardes3[4][7];
 
 
-Adafruit_PN532 nfc(33,32);
+Adafruit_PN532 nfc(0,4);
 
 void setup() {
   // lcd init
@@ -613,7 +613,7 @@ void enkelEnergie(){
   
     }
 
-  key == NULL; //Reset het key signaal
+  
   }
 }
 
@@ -724,6 +724,7 @@ void loop() {
   
 
   if(reset){
+    Serial.println("reset");
     resetPuzzel();
   }
 
