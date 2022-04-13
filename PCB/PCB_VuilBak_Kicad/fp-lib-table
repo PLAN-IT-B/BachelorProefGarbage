@@ -5,4 +5,6 @@
   (lib (name "TCA")(type "KiCad")(uri "${KIPRJMOD}/TCA")(options "")(descr ""))
   (lib (name "pins")(type "KiCad")(uri "${KIPRJMOD}/pins")(options "")(descr ""))
   (lib (name "1-1825910-4")(type "KiCad")(uri "C:/Users/timme/Downloads/1-1825910-4.pretty")(options "")(descr ""))
+  (lib (name "knop")(type "KiCad")(uri "${KIPRJMOD}/knop")(options "")(descr ""))
+  (lib (name "micro_usb_2")(type "KiCad")(uri "${KIPRJMOD}/micro_usb_2")(options "")(descr ""))
 )

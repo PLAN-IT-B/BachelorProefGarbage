@@ -5,4 +5,5 @@
   (lib (name "degson")(type "Legacy")(uri "${KIPRJMOD}/degson.lib")(options "")(descr ""))
   (lib (name "USB3090-XX-X_REVE")(type "Legacy")(uri "${KIPRJMOD}/micro_usb/USB3090-XX-X_REVE.lib")(options "")(descr ""))
   (lib (name "TCA9548APWR")(type "Legacy")(uri "${KIPRJMOD}/TCA/TCA9548APWR.lib")(options "")(descr ""))
+  (lib (name "105017-1001")(type "Legacy")(uri "${KIPRJMOD}/micro_usb_3/105017-1001.lib")(options "")(descr ""))
 )

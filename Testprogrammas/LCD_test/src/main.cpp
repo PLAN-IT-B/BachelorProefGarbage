@@ -39,6 +39,8 @@ void setup() {
   lcd.setCursor(3,2);
   lcd.print("Generate power!");
 
+  
+
 }
 
 
