@@ -71,17 +71,17 @@ void callback(char *topic, byte *message, unsigned int length)
   }
 
   if (messageTemp == "Reset escaperoom"){
-    reset == true;
+    //reset = true;
   }
 
   else if(messageTemp == "Groen"){
-    energie == true;
+    energie = true;
   }
   else if(messageTemp == "Oranje"){
-    energie == false;
+    energie = false;
   }
   else if(messageTemp == "Rood"){
-    energie == false;
+    energie = false;
   }
 
   else if(messageTemp.indexOf("Wristband-code") > 0){
@@ -181,12 +181,12 @@ boolean codeTekst;
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
 uint8_t uidLength = 7; 
-uint8_t juisteWaardes1[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xF2, 0x84, 0xA2, 0x2D, 0x4D, 0x80}, {0x04, 0xEB, 0x83, 0xA2, 0x2D, 0x4D, 0x80}};
-uint8_t juisteWaardes2[4][7];
-uint8_t juisteWaardes3[4][7];
+uint8_t juisteWaardes1[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xBB, 0x03, 0x82, 0x31, 0x4D, 0x84}};
+uint8_t juisteWaardes2[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x04, 0xAB, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xA3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x99, 0x02, 0x82, 0x31, 0x4D, 0x84}};
+uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x8C, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x84, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x7C, 0x05, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(33,32);
+Adafruit_PN532 nfc(0,4);
 
 void setup() {
   // lcd init
@@ -406,7 +406,7 @@ void scanRFID2(){
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
-        Serial.println("Check een waarde");
+        
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes2[j][i]){
             checkVuilnis = false;
@@ -416,8 +416,7 @@ void scanRFID2(){
         if (checkVuilnis == true){
           juist = true; //Er is een juiste tag gevonden
           for(int k = 0;k<uidLength;k++){
-          Serial.println(j);
-          Serial.println(k);
+          
           juisteWaardes2[j][k] = 0;
         
         }
@@ -464,7 +463,7 @@ void scanRFID3(){
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
-        Serial.println("Check een waarde");
+     
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes3[j][i]){
             checkVuilnis = false;
@@ -474,8 +473,7 @@ void scanRFID3(){
         if (checkVuilnis == true){
           juist = true; //Er is een juiste tag gevonden
           for(int k = 0;k<uidLength;k++){
-          Serial.println(j);
-          Serial.println(k);
+    
           juisteWaardes3[j][k] = 0;
         
         }
@@ -613,7 +611,7 @@ void enkelEnergie(){
   
     }
 
-  key == NULL; //Reset het key signaal
+  
   }
 }
 
@@ -645,7 +643,7 @@ void puzzel(){
 
 
   if(digitalRead(Button_pin1) == HIGH){
-    scanRFID1();
+    scanRFID3();
   }
  /* if(digitalRead(Button_pin2) == HIGH){
     scanRFID2();
@@ -724,6 +722,7 @@ void loop() {
   
 
   if(reset){
+    Serial.println("reset");
     resetPuzzel();
   }
 
