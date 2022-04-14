@@ -2618,7 +2618,7 @@
     )
   )
 
-  (gr_rect (start 117.8 22.4) (end 217.8 122.4) (layer "F.Cu") (width 0.2) (fill none) (tstamp ca50ad89-c0a6-44e2-b104-9e954a0fd3c5))
+  (gr_rect (start 117.8 22.4) (end 217.8 122.4) (layer "Edge.Cuts") (width 0.2) (fill none) (tstamp ca50ad89-c0a6-44e2-b104-9e954a0fd3c5))
   (gr_text "GPIO 26" (at 122.07 59.05) (layer "F.Cu") (tstamp 020c37c7-2a92-402b-ba45-775a23eeb89c)
     (effects (font (size 1 1) (thickness 0.2)))
   )
