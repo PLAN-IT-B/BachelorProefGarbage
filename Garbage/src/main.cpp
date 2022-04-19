@@ -206,7 +206,6 @@ void setup() {
 
   //Scale
   float calibration_factor = 2300;
-  Serial.println("voorI2C");
   scale.begin(26,25);
 
   //apply the calibration
@@ -664,13 +663,26 @@ void eindePuzzel(){
 
     
 
-
+//print gewicht
+lcd.clear();
 lcd.setCursor(2, 0);
 lcd.print("Alles gesorteerd");
 lcd.setCursor(1, 1);
 lcd.print("Definitief gewicht:");
 lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
+lcd.setCursor(0,3);
+lcd.print(scale.get_units(), 4);
+lcd.setCursor(0,4);
+lcd.print("g");
+lcd.setCursor(0,10);
+lcd.print(scale2.get_units(), 4);
+lcd.setCursor(0,14);
+lcd.print("g");
+lcd.setCursor(0,16);
+lcd.print(scale2.get_units(), 4);
+lcd.setCursor(0,20);
+lcd.print("g");
 
 if (!defGewicht){
 
@@ -747,7 +759,6 @@ void loop() {
     enkelEnergie();
   }
  
-  
 }
 
 
