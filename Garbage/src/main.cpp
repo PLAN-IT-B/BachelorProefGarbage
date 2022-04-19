@@ -37,6 +37,7 @@ long lastMsg = 0;
 char msg[50];
 int value = 0;
 
+void callback(char *topic, byte *message, unsigned int length);
 
 void setup_wifi()
 {
@@ -56,81 +57,6 @@ void setup_wifi()
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 }
-
-void callback(char *topic, byte *message, unsigned int length)
-{
-  Serial.print("Message arrived on topic: ");
-  Serial.print(topic);
-   
-  Serial.print(". Message: ");
-  String messageTemp;
-
-  for (int i = 0; i < length; i++)
-  {
-    Serial.print((char)message[i]);
-    messageTemp += (char)message[i];
-  }
-
-  if (messageTemp == "Reset escaperoom"){
-    //reset = true;
-  }
-
-  else if(messageTemp == "Groen"){
-    energie = true;
-  }
-  else if(messageTemp == "Oranje"){
-    energie = false;
-  }
-  else if(messageTemp == "Rood"){
-    energie = false;
-  }
-
-  else if(messageTemp.indexOf("Wristband-code") >= 0){
-    code[0]= (messageTemp.charAt(15)-'0');
-    code[1]= (messageTemp.charAt(16)-'0');
-    code[2]= (messageTemp.charAt(17)-'0');
-    code[3]= (messageTemp.charAt(18)-'0');
-    Serial.println("Code ontvangen");
-    for(int i = 0; i<4;i++){
-      Serial.println(code[i]);
-    }
-  }
-  else if(messageTemp.indexOf("Trein-code") >= 0){
-    code[4]= (messageTemp.charAt(11)-'0');
-    
-  }
-
-
-
-}
-
-void reconnect()
-{
-  // Loop until we're reconnected
-  while (!client.connected())
-  {
-    Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
-    if (client.connect("Garbage"))
-    {
-      Serial.println("connected");
-      // Subscribe
-      client.subscribe("trappenmaar/zone");
-      client.subscribe("wristbands/3cijfers");
-      client.subscribe("treingame/4decijfer");
-      client.subscribe("controlpanel/reset");
-    }
-    else
-    {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
-}
-
 
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
@@ -225,19 +151,19 @@ void setup() {
 
   scale.set_scale(7320);
 
-// //Andere scales ook doen
-// //Scale2
-//   scale.begin(26,25);
+ //Andere scales ook doen
+ //Scale2
+   scale2.begin(33,32);
 
-//   //apply the calibration
-//   scale.set_scale();
+   //apply the calibration
+   scale2.set_scale();
  
-//   //initializing the tare. 
-//   scale.tare();	//Reset the scale to 0
+   //initializing the tare. 
+   scale2.tare();	//Reset the scale to 0
 
-//   scale.set_scale(7320);
+   scale2.set_scale(7320);
 
-//   //Scale2
+//   //Scale3
 //   scale.begin(12,14);
 
 //   //apply the calibration
@@ -247,10 +173,6 @@ void setup() {
 //   scale.tare();	//Reset the scale to 0
 
 //   scale.set_scale(7320);
-  
-
-
-
   
 
   //Serial monitor en I2C
@@ -265,7 +187,7 @@ void setup() {
 
 
   //Overige
-  char straf;
+  straf = "fout";
 
   
 
@@ -323,9 +245,84 @@ void setup() {
 
 
   //Ready
-  client.publish("controlpanel/status","GarbageReady");
-  Serial.println("Ready gestuurd");
 }
+
+void callback(char *topic, byte *message, unsigned int length)
+{
+  Serial.print("Message arrived on topic: ");
+  Serial.print(topic);
+   
+  Serial.print(". Message: ");
+  String messageTemp;
+
+  for (int i = 0; i < length; i++)
+  {
+    Serial.print((char)message[i]);
+    messageTemp += (char)message[i];
+  }
+
+  if (messageTemp == "Reset escaperoom"){
+    reset = true;
+  }
+
+  else if(messageTemp == "Groen"){
+    energie = true;
+  }
+  else if(messageTemp == "Oranje"){
+    energie = false;
+  }
+  else if(messageTemp == "Rood"){
+    energie = false;
+  }
+
+  else if(messageTemp.indexOf("Wristband-code") >= 0){
+    code[0]= (messageTemp.charAt(15)-'0');
+    code[1]= (messageTemp.charAt(16)-'0');
+    code[2]= (messageTemp.charAt(17)-'0');
+    code[3]= (messageTemp.charAt(18)-'0');
+    Serial.println("Code ontvangen");
+    for(int i = 0; i<4;i++){
+      Serial.println(code[i]);
+    }
+  }
+  else if(messageTemp.indexOf("Trein-code") >= 0){
+    code[4]= (messageTemp.charAt(11)-'0');
+    
+  }
+
+
+
+}
+
+void reconnect()
+{
+  // Loop until we're reconnected
+  while (!client.connected())
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    if (client.connect("GarbageESP"))
+    {
+      Serial.println("connected");
+      // Subscribe
+      client.subscribe("TrappenMaar/buffer");
+      client.subscribe("wristbands/3cijfers");
+      client.subscribe("treingame/4decijfer");
+      client.subscribe("controlpanel/reset");
+      client.subscribe("controlpanel/status");
+    }
+    else
+    {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
+
 
 void schrijfScannen(){
   lcd.clear();
@@ -412,7 +409,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       client.publish("trappenmaar/buffer",straf);
+       client.publish("TrappenMaar/buffer",straf);
        Serial.println("Fout");
        failureSound();
       }
@@ -462,6 +459,11 @@ void scanRFID2(){
           
           Serial.println("correct!");
           Serial.println(pmd);
+
+          //Gewicht
+          codeTekst = false;
+          wachtOpGewicht = true;
+          nummerWeegschaal = 2;
         }
 
 
@@ -519,6 +521,11 @@ void scanRFID3(){
           
           Serial.println("correct!");
           Serial.println(p_k);
+
+          //Gewicht
+          codeTekst = false;
+          wachtOpGewicht = true;
+          nummerWeegschaal = 3;
         }
 
 
@@ -561,11 +568,19 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
       case 1: vorigGewicht = scale.get_units(); 
       Serial.println(vorigGewicht);
       break;
+
+      case 2: vorigGewicht = scale2.get_units(); 
+      Serial.println(vorigGewicht);
+      break;
     }
   }
 
     switch(nummerWeegschaal){ //nieuw gewicht
       case 1: huidigGewicht = scale.get_units(); 
+      Serial.println(huidigGewicht);
+      break;
+
+      case 2: huidigGewicht = scale2.get_units(); 
       Serial.println(huidigGewicht);
       break;
     }
@@ -575,6 +590,11 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
         wachtOpGewicht = false;
         codeTekst= false;
       }
+
+      if(rest == n /*&& pmd == n && p&k == n*/){
+      checkVuilnisTotaal = true;
+  
+    }
   
 
   
@@ -737,6 +757,7 @@ void eindePuzzel(){
     
 
 //print gewicht
+if(codeTekst==false){
 lcd.clear();
 lcd.setCursor(2, 0);
 lcd.print("Alles gesorteerd");
@@ -744,32 +765,41 @@ lcd.setCursor(1, 1);
 lcd.print("Definitief gewicht:");
 lcd.setCursor(0, 2);
 lcd.print("Rest     PMD     P&K"); 
-lcd.setCursor(0,3);
-lcd.print(scale.get_units(), 4);
-lcd.setCursor(0,4);
+lcd.setCursor(3,3);
 lcd.print("g");
-lcd.setCursor(0,10);
-lcd.print(scale2.get_units(), 4);
-lcd.setCursor(0,14);
+lcd.setCursor(12,3);
 lcd.print("g");
-lcd.setCursor(0,16);
-lcd.print(scale2.get_units(), 4);
-lcd.setCursor(0,20);
+lcd.setCursor(19,3);
 lcd.print("g");
-
+codeTekst = true;
+}
 if (!defGewicht){
 
 //Lees gewicht
 
-
+  restG = roundf(scale.get_units()*100);
+  Serial.println(restG);
+  /*pmdG = (scale2.get_units(),2);
+  Serial.println(pmdG);
+  p_kG = (scale3.get_units(),2);
+  Serial.println(p_kG);*/
 
 
   lcd.setCursor(0,3);
   lcd.print(restG);
+  lcd.setCursor(2,3);
+  lcd.print("0");
+  
+  
   lcd.setCursor(9,3);
   lcd.print(pmdG);
+  lcd.setCursor(11,3);
+  lcd.print("0");
+  
   lcd.setCursor(17,3);
   lcd.print(p_kG);
+  lcd.setCursor(19,3);
+  lcd.print("0");
 
 
   defGewicht = true;
@@ -797,7 +827,10 @@ void loop() {
   if (!client.connected())
   {
     reconnect();
+    client.publish("controlpanel/status","Garbage Ready");
+    Serial.println("Ready gestuurd");
   }
+  
   client.loop();
 
   long now = millis();
@@ -829,10 +862,7 @@ void loop() {
 
   else if(energie && actief){
     puzzel();
-    if(p_k == n && pmd == n && rest == n){
-      lcd.clear();
-      checkVuilnisTotaal = true;
-    }
+    
   }
 
   else if(energie){
