@@ -25,11 +25,12 @@ boolean reset = false;
 boolean energie;
 boolean actief;
 boolean checkVuilnisTotaal;
+boolean wachtOpGewicht;
 
 
 //code 
-int cinput[4];
-int code[] = {1,1,1,1}; //Voorlopig pas aan naar -1, ...
+int cinput[5];
+int code[] = {1,1,1,1,1}; //Voorlopig pas aan naar -1, ...
 
 
 long lastMsg = 0;
@@ -84,13 +85,18 @@ void callback(char *topic, byte *message, unsigned int length)
     energie = false;
   }
 
-  else if(messageTemp.indexOf("Wristband-code") > 0){
-    code[0]= messageTemp.charAt(16);
-    code[1]= messageTemp.charAt(17);
-    code[2]= messageTemp.charAt(18);
+  else if(messageTemp.indexOf("Wristband-code") >= 0){
+    code[0]= (messageTemp.charAt(15)-'0');
+    code[1]= (messageTemp.charAt(16)-'0');
+    code[2]= (messageTemp.charAt(17)-'0');
+    code[3]= (messageTemp.charAt(18)-'0');
+    Serial.println("Code ontvangen");
+    for(int i = 0; i<4;i++){
+      Serial.println(code[i]);
+    }
   }
-  else if(messageTemp.indexOf("Trein-code") > 0){
-    code[3]= messageTemp.charAt(12);
+  else if(messageTemp.indexOf("Trein-code") >= 0){
+    code[4]= (messageTemp.charAt(11)-'0');
     
   }
 
@@ -165,7 +171,11 @@ void TCA9548A(uint8_t bus){
 #define Button_pin3 25
 char* straf;
 #define sound 14
+
 HX711 scale, scale2,scale3;
+float vorigGewicht;
+float huidigGewicht;
+int nummerWeegschaal;
 
 //Hoeveel vuilnis moet in 1 vuilbak en check rfid
 int aantalVuilnis = 4;
@@ -204,8 +214,7 @@ void setup() {
   pinMode(Button_pin2, INPUT);
   pinMode(Button_pin3, INPUT);
 
-  //Scale
-  float calibration_factor = 2300;
+  //Scale1
   scale.begin(26,25);
 
   //apply the calibration
@@ -214,7 +223,31 @@ void setup() {
   //initializing the tare. 
   scale.tare();	//Reset the scale to 0
 
-  scale.set_scale(calibration_factor);
+  scale.set_scale(7320);
+
+// //Andere scales ook doen
+// //Scale2
+//   scale.begin(26,25);
+
+//   //apply the calibration
+//   scale.set_scale();
+ 
+//   //initializing the tare. 
+//   scale.tare();	//Reset the scale to 0
+
+//   scale.set_scale(7320);
+
+//   //Scale2
+//   scale.begin(12,14);
+
+//   //apply the calibration
+//   scale.set_scale();
+ 
+//   //initializing the tare. 
+//   scale.tare();	//Reset the scale to 0
+
+//   scale.set_scale(7320);
+  
 
 
 
@@ -366,6 +399,12 @@ void scanRFID1(){
           
           Serial.println("correct!");
           Serial.println(rest);
+
+
+          //Gewicht
+          codeTekst = false;
+          wachtOpGewicht = true;
+          nummerWeegschaal = 1;
         }
 
 
@@ -509,6 +548,40 @@ void resetPuzzel(){
 
 }
 
+void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
+    if (codeTekst == false){
+    lcd.clear();
+    lcd.setCursor(2,1);
+    lcd.print("Gooi het vuilnis");
+    lcd.setCursor(2,2);
+    lcd.print("in de juiste bak");
+    codeTekst =true;
+
+    switch(nummerWeegschaal){ //Oorsprongkelijk gewicht
+      case 1: vorigGewicht = scale.get_units(); 
+      Serial.println(vorigGewicht);
+      break;
+    }
+  }
+
+    switch(nummerWeegschaal){ //nieuw gewicht
+      case 1: huidigGewicht = scale.get_units(); 
+      Serial.println(huidigGewicht);
+      break;
+    }
+
+      if((huidigGewicht - vorigGewicht)>0.1){
+        //Verlaat deze staat
+        wachtOpGewicht = false;
+        codeTekst= false;
+      }
+  
+
+  
+
+
+}
+
 void geenEnergie(){
 lcd.noBacklight();
     bl = false;
@@ -527,7 +600,7 @@ void enkelEnergie(){
     lcd.setCursor(2,0);
     lcd.print("Voer de code in:");
     lcd.setCursor(8,2);
-    lcd.print("____");
+    lcd.print("_____");
     codeTekst = true;
     }
 
@@ -540,9 +613,9 @@ void enkelEnergie(){
     if(key =='#'){
       
       
-      if(c ==12){ //De positie is het laatste cijfer
+      if(c ==13){ //De positie is het laatste cijfer
       boolean check = true; //Controleer of de code klopt
-      for(int i = 0;i<4;i++){
+      for(int i = 0;i<5;i++){
         if(code[i]!=cinput[i]){
           check = false;
         }
@@ -565,7 +638,7 @@ void enkelEnergie(){
       else{
         client.publish("trappenmaar/buffer",straf);
         lcd.setCursor(8,2);
-        lcd.print("____");
+        lcd.print("_____");
         c = 8;
         failureSound();
         
@@ -599,7 +672,7 @@ void enkelEnergie(){
       
      
 
-      if(c<12){ //Vul het getal in en schuif 1 plaats op.
+      if(c<13){ //Vul het getal in en schuif 1 plaats op.
       lcd.setCursor(c,2);
       lcd.print(key);
       cinput[c-8]= key-'0';
@@ -642,7 +715,7 @@ void puzzel(){
 
 
   if(digitalRead(Button_pin1) == HIGH){
-    scanRFID3();
+    scanRFID1();
   }
  /* if(digitalRead(Button_pin2) == HIGH){
     scanRFID2();
@@ -712,7 +785,8 @@ if (!defGewicht){
 void loop() {
 
   
-  energie = true; //Test
+   energie = true; //Test
+  // actief = true;
   
   key = keypad.getKey(); //Vraag de input van de key op
 
@@ -738,14 +812,20 @@ void loop() {
     resetPuzzel();
   }
 
+  else if(!energie){
+    geenEnergie();
+  }
+
+  else if(wachtOpGewicht){
+    gewichtWachter();
+  }
+
   else if(checkVuilnisTotaal){
     eindePuzzel();
 
   }
 
-  else if(!energie){
-    geenEnergie();
-  }
+
 
   else if(energie && actief){
     puzzel();
