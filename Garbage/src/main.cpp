@@ -801,6 +801,8 @@ if (!defGewicht){
   lcd.setCursor(19,3);
   lcd.print("0");
 
+  client.publish("garbage/eindcode","Code"); //Nog aan te passen naar gewicht
+
 
   defGewicht = true;
 } 
