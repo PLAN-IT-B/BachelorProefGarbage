@@ -67,6 +67,8 @@ int p_kG; //gewicht papier en karton def
 bool defGewicht = false;
 int n; //Hoeveel vuil?
 
+
+
 //Keypad
 const byte ROWS = 4; //four rows
 const byte COLS = 3; //three columns
@@ -94,8 +96,7 @@ void TCA9548A(uint8_t bus){
 //Varia
 #define Button_pin1 27
 #define Button_pin2 35
-#define Button_pin3 25
-char* straf;
+#define Button_pin3 34
 #define sound 14
 
 HX711 scale, scale2,scale3;
@@ -124,6 +125,8 @@ uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x0
 
 Adafruit_PN532 nfc(0,4);
 
+
+
 void setup() {
   // lcd init
   lcd.init();
@@ -131,6 +134,8 @@ void setup() {
   codeTekst = false;
   c= 8;
   n = 4;
+
+  
 
   defGewicht =false;
   checkVuilnisTotaal = false;
@@ -161,7 +166,7 @@ void setup() {
    //initializing the tare. 
    scale2.tare();	//Reset the scale to 0
 
-   scale2.set_scale(7320);
+   scale2.set_scale(4000);
 
 //   //Scale3
 //   scale.begin(12,14);
@@ -173,6 +178,8 @@ void setup() {
 //   scale.tare();	//Reset the scale to 0
 
 //   scale.set_scale(7320);
+
+
   
 
   //Serial monitor en I2C
@@ -186,13 +193,12 @@ void setup() {
 
 
 
-  //Overige
-  straf = "fout";
+
 
   
 
 
-  TCA9548A(7);
+  TCA9548A(2);
    nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
@@ -210,7 +216,7 @@ void setup() {
   
 
 
-  /*TCA9548A(3);
+  TCA9548A(3);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
@@ -228,20 +234,21 @@ void setup() {
   
   
 
-  /*TCA9548A(2);
-  nfc.begin();
-  //Kan weg vanaf hier
-  uint32_t versiondata3 = nfc.getFirmwareVersion();
-  if (! versiondata3) {
+  TCA9548A(4);
+   nfc.begin();
+
+   versiondata = nfc.getFirmwareVersion();
+  if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     while (1); // halt
   }
   // Got ok data, print it out!
-  Serial.print("Found chip PN5"); Serial.println((versiondata3>>24) & 0xFF, HEX); 
-  Serial.print("Firmware ver. "); Serial.print((versiondata3>>16) & 0xFF, DEC); 
-  Serial.print('.'); Serial.println((versiondata3>>8) & 0xFF, DEC);
-  //Tot hier
-  nfc.SAMConfig();*/
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  
+  // configure board to read RFID tags
+  nfc.SAMConfig();
 
 
   //Ready
@@ -305,11 +312,10 @@ void reconnect()
     {
       Serial.println("connected");
       // Subscribe
-      client.subscribe("TrappenMaar/buffer");
-      client.subscribe("wristbands/3cijfers");
+      client.subscribe("wristbands/#");
       client.subscribe("treingame/4decijfer");
       client.subscribe("controlpanel/reset");
-      client.subscribe("controlpanel/status");
+      client.subscribe("TrappenMaar/zone");
     }
     else
     {
@@ -409,7 +415,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer",straf);
+       client.publish("TrappenMaar/buffer","Kleine straf");
        Serial.println("Fout");
        failureSound();
       }
@@ -441,7 +447,7 @@ void scanRFID2(){
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
-        
+      
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes2[j][i]){
             checkVuilnis = false;
@@ -460,6 +466,7 @@ void scanRFID2(){
           Serial.println("correct!");
           Serial.println(pmd);
 
+
           //Gewicht
           codeTekst = false;
           wachtOpGewicht = true;
@@ -471,7 +478,7 @@ void scanRFID2(){
       }
 
       if(!juist){
-       client.publish("trappenmaar/buffer",straf);
+       client.publish("TrappenMaar/buffer","Kleine straf");
        Serial.println("Fout");
        failureSound();
       }
@@ -503,7 +510,7 @@ void scanRFID3(){
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
-     
+      
         for(int i = 0;i<uidLength;i++){
           if( uid[i]!= juisteWaardes3[j][i]){
             checkVuilnis = false;
@@ -513,7 +520,7 @@ void scanRFID3(){
         if (checkVuilnis == true){
           juist = true; //Er is een juiste tag gevonden
           for(int k = 0;k<uidLength;k++){
-    
+          
           juisteWaardes3[j][k] = 0;
         
         }
@@ -522,10 +529,11 @@ void scanRFID3(){
           Serial.println("correct!");
           Serial.println(p_k);
 
+
           //Gewicht
           codeTekst = false;
           wachtOpGewicht = true;
-          nummerWeegschaal = 3;
+          nummerWeegschaal = 2; //verander naar 3
         }
 
 
@@ -533,7 +541,7 @@ void scanRFID3(){
       }
 
       if(!juist){
-       client.publish("trappenmaar/buffer",straf);
+       client.publish("TrappenMaar/buffer","Kleine straf");
        Serial.println("Fout");
        failureSound();
       }
@@ -656,7 +664,7 @@ void enkelEnergie(){
       
 
       else{
-        client.publish("trappenmaar/buffer",straf);
+        client.publish("trappenmaar/buffer","Kleine straf");
         lcd.setCursor(8,2);
         lcd.print("_____");
         c = 8;
@@ -737,12 +745,12 @@ void puzzel(){
   if(digitalRead(Button_pin1) == HIGH){
     scanRFID1();
   }
- /* if(digitalRead(Button_pin2) == HIGH){
+  if(digitalRead(Button_pin2) == HIGH){
     scanRFID2();
   }
   if(digitalRead(Button_pin3) == HIGH){
     scanRFID3();
-  }*/
+  }
 
  }
 
@@ -779,8 +787,9 @@ if (!defGewicht){
 
   restG = roundf(scale.get_units()*100);
   Serial.println(restG);
-  /*pmdG = (scale2.get_units(),2);
+  pmdG = (scale2.get_units(),2);
   Serial.println(pmdG);
+  /*
   p_kG = (scale3.get_units(),2);
   Serial.println(p_kG);*/
 
@@ -801,7 +810,15 @@ if (!defGewicht){
   lcd.setCursor(19,3);
   lcd.print("0");
 
-  client.publish("garbage/eindcode","Code"); //Nog aan te passen naar gewicht
+ int eindcodeInt = (restG+pmdG+p_kG)*10;
+ String eindcodeString = String(eindcodeInt,DEC);
+ Serial.print(eindcodeString);
+ const char* eindcode=eindcodeString.c_str();
+ 
+ 
+  
+
+  client.publish("garbage/eindcode",eindcode); //Nog aan te passen naar gewicht
 
 
   defGewicht = true;
