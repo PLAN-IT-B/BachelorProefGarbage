@@ -79,8 +79,8 @@ char keys[ROWS][COLS] = {
   {'*','0','#'}
 };
 
-byte rowPins[ROWS] = {18, 5, 17,16}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {4,0,2}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {4, 19, 18,17}; // {18,5,17,6}connect to the row pinouts of the keypad
+byte colPins[COLS] = {16,2,5}; //{4,0,2}connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 char key;
@@ -94,10 +94,10 @@ void TCA9548A(uint8_t bus){
 }
 
 //Varia
-#define Button_pin1 27
-#define Button_pin2 35
-#define Button_pin3 34
-#define sound 14
+#define Button_pin1 32
+#define Button_pin2 33
+#define Button_pin3 25
+#define sound 23 // zat op 14
 
 HX711 scale, scale2,scale3;
 float vorigGewicht;
@@ -123,7 +123,7 @@ uint8_t juisteWaardes2[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x
 uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x8C, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x84, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x7C, 0x05, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(0,4);
+Adafruit_PN532 nfc(2,4); // (0,4)
 
 
 
@@ -146,7 +146,7 @@ void setup() {
   pinMode(Button_pin3, INPUT);
 
   //Scale1
-  scale.begin(26,25);
+  scale.begin(26,27);
 
   //apply the calibration
   scale.set_scale();
@@ -158,13 +158,14 @@ void setup() {
 
  //Andere scales ook doen
  //Scale2
-   scale2.begin(33,32);
+   scale2.begin(14,12);
 
    //apply the calibration
    scale2.set_scale();
  
    //initializing the tare. 
-   scale2.tare();	//Reset the scale to 0
+   scal
+   e2.tare();	//Reset the scale to 0
 
    scale2.set_scale(4000);
 
