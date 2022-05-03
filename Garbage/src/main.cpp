@@ -164,8 +164,7 @@ void setup() {
    scale2.set_scale();
  
    //initializing the tare. 
-   scal
-   e2.tare();	//Reset the scale to 0
+   scale2.tare();	//Reset the scale to 0
 
    scale2.set_scale(4000);
 
