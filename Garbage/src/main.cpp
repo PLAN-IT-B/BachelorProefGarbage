@@ -123,7 +123,7 @@ uint8_t juisteWaardes2[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x
 uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x8C, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x84, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x7C, 0x05, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(2,4); // (0,4)
+Adafruit_PN532 nfc(4,0); // (0,4)
 
 
 
@@ -198,12 +198,13 @@ void setup() {
   
 
 
-  TCA9548A(2);
+  /*TCA9548A(7);
    nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
+    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -216,12 +217,13 @@ void setup() {
   
 
 
-  TCA9548A(3);
+  TCA9548A(6);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
+    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -234,12 +236,13 @@ void setup() {
   
   
 
-  TCA9548A(4);
+  TCA9548A(5);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
+    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -248,7 +251,7 @@ void setup() {
   Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
   
   // configure board to read RFID tags
-  nfc.SAMConfig();
+  nfc.SAMConfig();*/
 
 
   //Ready
@@ -313,7 +316,7 @@ void reconnect()
       Serial.println("connected");
       // Subscribe
       client.subscribe("wristbands/#");
-      client.subscribe("treingame/4decijfer");
+      client.subscribe("treingame/#");
       client.subscribe("controlpanel/reset");
       client.subscribe("TrappenMaar/zone");
     }
@@ -368,7 +371,7 @@ noTone(sound,0);
 void scanRFID1(){
   if(energie && actief){
     Serial.println("Scanning ...");
-    TCA9548A(2);
+    TCA9548A(7);
     uint8_t success = false;
     schrijfScannen();
    
@@ -431,7 +434,7 @@ void scanRFID1(){
 void scanRFID2(){
    if(energie && actief){
     Serial.println("Scanning ...");
-    TCA9548A(3);
+    TCA9548A(6);
     uint8_t success = false;
     schrijfScannen();
    
@@ -494,7 +497,7 @@ void scanRFID2(){
 void scanRFID3(){
    if(energie && actief){
     Serial.println("Scanning ...");
-    TCA9548A(4);
+    TCA9548A(5);
     uint8_t success = false;
     schrijfScannen();
    
@@ -599,7 +602,7 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
         codeTekst= false;
       }
 
-      if(rest == n /*&& pmd == n && p&k == n*/){
+      if(rest == n && pmd == n && p_k == n){
       checkVuilnisTotaal = true;
   
     }
@@ -732,7 +735,7 @@ void puzzel(){
     lcd.setCursor(0,0);
     lcd.print("Zoek vuilnis, scan");
     lcd.setCursor(0,1);
-    lcd.print("in het juiste bakje");
+    lcd.print("in het juiste vak");
     lcd.setCursor(0,2);
     lcd.print("en gooi het in de");
     lcd.setCursor(0,3);
