@@ -97,7 +97,7 @@ void TCA9548A(uint8_t bus){
 #define Button_pin1 32
 #define Button_pin2 33
 #define Button_pin3 25
-#define sound 23 // zat op 14
+#define sound 12 // zat op 14
 
 HX711 scale, scale2,scale3;
 float vorigGewicht;
@@ -158,7 +158,7 @@ void setup() {
 
  //Andere scales ook doen
  //Scale2
-   scale2.begin(14,12);
+   scale2.begin(14,23);
 
    //apply the calibration
    scale2.set_scale();
@@ -198,7 +198,7 @@ void setup() {
   
 
 
-  /*TCA9548A(7);
+  TCA9548A(7);
    nfc.begin();
 
   uint32_t versiondata = nfc.getFirmwareVersion();
@@ -236,7 +236,7 @@ void setup() {
   
   
 
-  TCA9548A(5);
+  TCA9548A(7);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
@@ -251,7 +251,7 @@ void setup() {
   Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
   
   // configure board to read RFID tags
-  nfc.SAMConfig();*/
+  nfc.SAMConfig();
 
 
   //Ready
@@ -319,6 +319,7 @@ void reconnect()
       client.subscribe("treingame/#");
       client.subscribe("controlpanel/reset");
       client.subscribe("TrappenMaar/zone");
+      client.subscribe("garbage/eindcode");
     }
     else
     {
@@ -850,6 +851,7 @@ void loop() {
   {
     reconnect();
     client.publish("controlpanel/status","Garbage Ready");
+    client.publish("garbage/eindcode","1234");//Test
     Serial.println("Ready gestuurd");
   }
   
