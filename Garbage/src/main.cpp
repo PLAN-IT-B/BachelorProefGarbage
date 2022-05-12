@@ -123,7 +123,7 @@ uint8_t juisteWaardes2[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x
 uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x8C, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x84, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x7C, 0x05, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(4,0); // (0,4)
+Adafruit_PN532 nfc(4,16); // (0,4)
 
 
 
@@ -236,7 +236,7 @@ void setup() {
   
   
 
-  TCA9548A(7);
+  TCA9548A(5);
    nfc.begin();
 
    versiondata = nfc.getFirmwareVersion();
@@ -534,10 +534,11 @@ void scanRFID3(){
           Serial.println(p_k);
 
 
-          //Gewicht
+          /*//Gewicht
           codeTekst = false;
           wachtOpGewicht = true;
-          nummerWeegschaal = 2; //verander naar 3
+          nummerWeegschaal = 2; //verander naar 3*/
+          
         }
 
 
@@ -789,9 +790,9 @@ if (!defGewicht){
 
 //Lees gewicht
 
-  restG = roundf(scale.get_units()*100);
+  restG = (scale.get_units(),3);
   Serial.println(restG);
-  pmdG = (scale2.get_units(),2);
+  pmdG = (scale2.get_units(),3);
   Serial.println(pmdG);
   /*
   p_kG = (scale3.get_units(),2);
@@ -800,22 +801,22 @@ if (!defGewicht){
 
   lcd.setCursor(0,3);
   lcd.print(restG);
-  lcd.setCursor(2,3);
-  lcd.print("0");
   
   
   lcd.setCursor(9,3);
   lcd.print(pmdG);
-  lcd.setCursor(11,3);
-  lcd.print("0");
   
   lcd.setCursor(17,3);
   lcd.print(p_kG);
-  lcd.setCursor(19,3);
-  lcd.print("0");
 
- int eindcodeInt = (restG+pmdG+p_kG)*10;
- String eindcodeString = String(eindcodeInt,DEC);
+ int eindcodeInt = (restG+pmdG+p_kG);
+ String eindcodeString;
+ if(eindcodeInt >999){
+ eindcodeString = String(eindcodeInt,DEC);
+ }
+ else{
+   eindcodeString = "0" + String(eindcodeInt,DEC);
+ }
  Serial.print(eindcodeString);
  const char* eindcode=eindcodeString.c_str();
  
