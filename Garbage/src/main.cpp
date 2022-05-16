@@ -812,11 +812,15 @@ if (!defGewicht){
 
  int eindcodeInt = (restG+pmdG+p_kG);
  String eindcodeString;
- if(eindcodeInt >999){
- eindcodeString = String(eindcodeInt,DEC);
+ if(eindcodeInt <999){
+ eindcodeString = "0" + String(eindcodeInt,DEC);
+ }
+ else if(eindcodeInt <99){
+
+   eindcodeString = "00" + String(eindcodeInt,DEC);
  }
  else{
-   eindcodeString = "0" + String(eindcodeInt,DEC);
+   eindcodeString = String(eindcodeInt,DEC);
  }
  Serial.print(eindcodeString);
  const char* eindcode=eindcodeString.c_str();
@@ -853,7 +857,6 @@ void loop() {
   {
     reconnect();
     client.publish("controlpanel/status","Garbage Ready");
-    client.publish("garbage/eindcode","1234");//Test
     Serial.println("Ready gestuurd");
   }
   
