@@ -154,7 +154,7 @@ void setup() {
   //initializing the tare. 
   scale.tare();	//Reset the scale to 0
 
-  scale.set_scale(7320);
+  scale.set_scale(207200);
 
  //Andere scales ook doen
  //Scale2
@@ -166,7 +166,7 @@ void setup() {
    //initializing the tare. 
    scale2.tare();	//Reset the scale to 0
 
-   scale2.set_scale(4000);
+   scale2.set_scale(207200);
 
 //   //Scale3
 //   scale.begin(12,14);
@@ -794,6 +794,7 @@ if (!defGewicht){
   Serial.println(restG);
   pmdG = (scale2.get_units(),3);
   Serial.println(pmdG);
+  p_kG =100;
   /*
   p_kG = (scale3.get_units(),2);
   Serial.println(p_kG);*/
