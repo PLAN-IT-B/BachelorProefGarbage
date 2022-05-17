@@ -61,7 +61,7 @@ void setup_wifi()
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
 int p_k = 0; //Hoeveel papier en karton klaar?
-int restG; //gewicht rest def
+float restG; //gewicht rest def
 int pmdG; //gewicht pmd def
 int p_kG; //gewicht papier en karton def
 bool defGewicht = false;
@@ -754,7 +754,7 @@ void puzzel(){
     scanRFID3();
   }
 
-  if(rest == 3 && pmd == 3 && p_k == 4){
+  if(rest == 3 && pmd == 3 && p_k == 1){
       checkVuilnisTotaal = true;
 
  }}
@@ -790,19 +790,23 @@ if (!defGewicht){
 
 //Lees gewicht
 
-  pmdG = (scale.get_units(),3);
+  restG = scale.get_units();
   Serial.println(pmdG);
   //pmdG = (scale2.get_units(),3);
   //Serial.println(pmdG);
-  restG=400;
-  p_kG =100;
+  pmdG = 400;
+  p_kG = 100;
   /*
   p_kG = (scale3.get_units(),2);
   Serial.println(p_kG);*/
+  int Rrest = round(restG*1000);
+  //String gewichtstring = String(Rrest,DEC);
+  //const char* gewichtchar=gewichtstring.c_str();
+  //client.publish("garbage/gewicht",gewichtchar);
 
 
   lcd.setCursor(0,3);
-  lcd.print(restG);
+  lcd.print(Rrest);
   
   
   lcd.setCursor(9,3);
@@ -811,7 +815,7 @@ if (!defGewicht){
   lcd.setCursor(17,3);
   lcd.print(p_kG);
 
- int eindcodeInt = (restG+pmdG+p_kG);
+ int eindcodeInt = (Rrest+pmdG+p_kG);
  String eindcodeString;
  if(eindcodeInt <999){
  eindcodeString = "0" + String(eindcodeInt,DEC);
