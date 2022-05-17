@@ -595,7 +595,7 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
       break;
     }
 
-      if((huidigGewicht - vorigGewicht)>0.05){
+      if((huidigGewicht - vorigGewicht)>0.01){
         //Verlaat deze staat
         wachtOpGewicht = false;
         codeTekst= false;
@@ -618,6 +618,9 @@ lcd.noBacklight();
 }
 
 void enkelEnergie(){
+
+  key = keypad.getKey(); //Vraag de input van de key op
+
   //Tegen flikkeren
     if(bl ==false){
       lcd.backlight();
@@ -851,8 +854,6 @@ void loop() {
   
    //energie = true; //Test
   // actief = true;
-  
-  key = keypad.getKey(); //Vraag de input van de key op
 
 
 
