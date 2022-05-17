@@ -754,7 +754,7 @@ void puzzel(){
     scanRFID3();
   }
 
-  if(rest == 3 && pmd == 3 && p_k == 1){
+  if(rest == 3 && pmd == 3 && p_k == 4){
       checkVuilnisTotaal = true;
 
  }}
