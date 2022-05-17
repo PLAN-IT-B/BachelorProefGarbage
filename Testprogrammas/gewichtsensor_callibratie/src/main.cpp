@@ -2,8 +2,8 @@
 #include "HX711.h"
 
 //data pin and clock pin
-byte pinData = 26;
-byte pinClk = 25;
+byte pinData = 27;
+byte pinClk = 26;
  
 HX711 scale;
 //Parameter to calibrate weight and sensor, different for different sensors

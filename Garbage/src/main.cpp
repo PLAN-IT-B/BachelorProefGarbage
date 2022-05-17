@@ -30,7 +30,7 @@ boolean wachtOpGewicht;
 
 //code 
 int cinput[5];
-int code[] = {1,1,1,1,1}; //Voorlopig pas aan naar -1, ...
+int code[] = {4,5,9,8,1}; //Voorlopig pas aan naar -1, ...
 
 
 long lastMsg = 0;
@@ -95,9 +95,9 @@ void TCA9548A(uint8_t bus){
 
 //Varia
 #define Button_pin1 32
-#define Button_pin2 33
-#define Button_pin3 25
-#define sound 12 // zat op 14
+#define Button_pin2 25
+#define Button_pin3 33
+#define sound 23  // zat op 23
 
 HX711 scale, scale2,scale3;
 float vorigGewicht;
@@ -118,12 +118,12 @@ boolean codeTekst;
 //RFID
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
 uint8_t uidLength = 7; 
-uint8_t juisteWaardes1[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xBB, 0x03, 0x82, 0x31, 0x4D, 0x84}};
-uint8_t juisteWaardes2[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x04, 0xAB, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xA3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x99, 0x02, 0x82, 0x31, 0x4D, 0x84}};
-uint8_t juisteWaardes3[4][7] = {{0x04, 0x94, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x8C, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x84, 0x05, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x7C, 0x05, 0x82, 0x31, 0x4D, 0x84}};
+uint8_t juisteWaardes2[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xBB, 0x03, 0x82, 0x31, 0x4D, 0x84}};
+uint8_t juisteWaardes1[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x04, 0xAB, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xA3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0x99, 0x02, 0x82, 0x31, 0x4D, 0x84}};
+uint8_t juisteWaardes3[4][7] = {{0x04, 0xC8, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xD0, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xDA, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xE3, 0x02, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(4,16); // (0,4)
+Adafruit_PN532 nfc(4,0); // (0,4)
 
 
 
@@ -148,25 +148,23 @@ void setup() {
   //Scale1
   scale.begin(26,27);
 
-  //apply the calibration
-  scale.set_scale();
+  scale.set_scale(207200);
  
   //initializing the tare. 
   scale.tare();	//Reset the scale to 0
 
-  scale.set_scale(207200);
 
- //Andere scales ook doen
+
+ /*//Andere scales ook doen
  //Scale2
-   scale2.begin(14,23);
+   scale2.begin(23,27);
 
-   //apply the calibration
-   scale2.set_scale();
- 
+  scale2.set_scale(207200);
+
    //initializing the tare. 
-   scale2.tare();	//Reset the scale to 0
+   scale2.tare();	//Reset the scale to 0*/
 
-   scale2.set_scale(207200);
+   
 
 //   //Scale3
 //   scale.begin(12,14);
@@ -275,13 +273,13 @@ void callback(char *topic, byte *message, unsigned int length)
     reset = true;
   }
 
-  else if(messageTemp == "Groen"){
+  else if(messageTemp == "groen"){
     energie = true;
   }
-  else if(messageTemp == "Oranje"){
+  else if(messageTemp == "oranje"){
     energie = false;
   }
-  else if(messageTemp == "Rood"){
+  else if(messageTemp == "rood"){
     energie = false;
   }
 
@@ -419,7 +417,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine straf");
+       client.publish("TrappenMaar/buffer","Kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -471,10 +469,10 @@ void scanRFID2(){
           Serial.println(pmd);
 
 
-          //Gewicht
+         /* //Gewicht
           codeTekst = false;
           wachtOpGewicht = true;
-          nummerWeegschaal = 2;
+          nummerWeegschaal = 2;*/
         }
 
 
@@ -482,7 +480,7 @@ void scanRFID2(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine straf");
+       client.publish("TrappenMaar/buffer","Kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -534,11 +532,10 @@ void scanRFID3(){
           Serial.println(p_k);
 
 
-          /*//Gewicht
+         /* //Gewicht
           codeTekst = false;
           wachtOpGewicht = true;
-          nummerWeegschaal = 2; //verander naar 3*/
-          
+          nummerWeegschaal = 2;*/
         }
 
 
@@ -546,7 +543,7 @@ void scanRFID3(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine straf");
+       client.publish("TrappenMaar/buffer","Kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -598,14 +595,13 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
       break;
     }
 
-      if((huidigGewicht - vorigGewicht)>0.1){
+      if((huidigGewicht - vorigGewicht)>0.05){
         //Verlaat deze staat
         wachtOpGewicht = false;
         codeTekst= false;
       }
 
-      if(rest == n && pmd == n && p_k == n){
-      checkVuilnisTotaal = true;
+      
   
     }
   
@@ -613,7 +609,7 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
   
 
 
-}
+
 
 void geenEnergie(){
 lcd.noBacklight();
@@ -669,7 +665,7 @@ void enkelEnergie(){
       
 
       else{
-        client.publish("trappenmaar/buffer","Kleine straf");
+        client.publish("trappenmaar/buffer","Kleine fout");
         lcd.setCursor(8,2);
         lcd.print("_____");
         c = 8;
@@ -754,10 +750,14 @@ void puzzel(){
     scanRFID2();
   }
   if(digitalRead(Button_pin3) == HIGH){
+    Serial.println("Knop3");
     scanRFID3();
   }
 
- }
+  if(rest == 3 && pmd == 3 && p_k == 4){
+      checkVuilnisTotaal = true;
+
+ }}
 
 void eindePuzzel(){
 
@@ -775,9 +775,9 @@ lcd.clear();
 lcd.setCursor(2, 0);
 lcd.print("Alles gesorteerd");
 lcd.setCursor(1, 1);
-lcd.print("Definitief gewicht:");
+lcd.print("Hoeveel in totaal?");
 lcd.setCursor(0, 2);
-lcd.print("Rest     PMD     P&K"); 
+lcd.print("PMD     Rest     P&K"); 
 lcd.setCursor(3,3);
 lcd.print("g");
 lcd.setCursor(12,3);
@@ -790,10 +790,11 @@ if (!defGewicht){
 
 //Lees gewicht
 
-  restG = (scale.get_units(),3);
-  Serial.println(restG);
-  pmdG = (scale2.get_units(),3);
+  pmdG = (scale.get_units(),3);
   Serial.println(pmdG);
+  //pmdG = (scale2.get_units(),3);
+  //Serial.println(pmdG);
+  restG=400;
   p_kG =100;
   /*
   p_kG = (scale3.get_units(),2);
@@ -844,7 +845,7 @@ if (!defGewicht){
 void loop() {
 
   
-   energie = true; //Test
+   //energie = true; //Test
   // actief = true;
   
   key = keypad.getKey(); //Vraag de input van de key op
