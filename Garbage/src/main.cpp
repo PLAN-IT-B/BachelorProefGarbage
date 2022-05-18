@@ -375,7 +375,7 @@ void scanRFID1(){
     schrijfScannen();
    
 
-   
+  
     success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,500);
 
   
@@ -417,7 +417,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine fout");
+       client.publish("TrappenMaar/buffer","kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -480,7 +480,7 @@ void scanRFID2(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine fout");
+       client.publish("TrappenMaar/buffer","kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -543,7 +543,7 @@ void scanRFID3(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","Kleine fout");
+       client.publish("TrappenMaar/buffer","kleine fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -668,7 +668,7 @@ void enkelEnergie(){
       
 
       else{
-        client.publish("trappenmaar/buffer","Kleine fout");
+        client.publish("trappenmaar/buffer","grote fout");
         lcd.setCursor(8,2);
         lcd.print("_____");
         c = 8;
