@@ -1655,6 +1655,7 @@
     )
   )
 
+
   (junction (at 278.13 72.39) (diameter 0) (color 0 0 0 0)
     (uuid 045b6cc1-da9f-464d-bdc2-05ae3d9ae457)
   )
@@ -2228,7 +2229,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 2be7ff6b-f4ea-4ffe-8d43-0863b8cea94b)
   )
-  (text "ESP 32" (at 140.97 33.02 0)
+  (text "ESP32-WROOM-32E" (at 168.91 45.72 0)
     (effects (font (size 1.9 1.9) (thickness 0.4) bold italic) (justify left bottom))
     (uuid 34c59328-bbfd-41ed-bf8e-7ec2b3b0d1e1)
   )
