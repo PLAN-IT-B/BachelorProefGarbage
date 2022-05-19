@@ -64,6 +64,10 @@ int p_k = 0; //Hoeveel papier en karton klaar?
 float restG; //gewicht rest def
 int pmdG; //gewicht pmd def
 int p_kG; //gewicht papier en karton def
+int Rrest; //Gewicht afgerond eindresultaat
+int Rpmd; //Gewicht afgerond eindresultaat
+int Rp_k; //Gewicht afgerond eindresultaat
+
 bool defGewicht = false;
 int n; //Hoeveel vuil?
 
@@ -340,7 +344,7 @@ void schrijfScannen(){
 }
 
 void failureSound(){
-  tone(sound,NOTE_D5,100,0);
+tone(sound,NOTE_D5,100,0);
 noTone(sound,0);
 delay(50);
 tone(sound,NOTE_D5,100,0);
@@ -772,24 +776,8 @@ void eindePuzzel(){
 
     
 
-//print gewicht
-if(codeTekst==false){
-lcd.clear();
-lcd.setCursor(2, 0);
-lcd.print("Alles gesorteerd");
-lcd.setCursor(1, 1);
-lcd.print("Hoeveel in totaal?");
-lcd.setCursor(0, 2);
-lcd.print("PMD     Rest     P&K"); 
-lcd.setCursor(3,3);
-lcd.print("g");
-lcd.setCursor(12,3);
-lcd.print("g");
-lcd.setCursor(19,3);
-lcd.print("g");
-codeTekst = true;
-}
-if (!defGewicht){
+
+if (!defGewicht){ //1 maal het gewicht bepalen
 
 //Lees gewicht
 
@@ -802,21 +790,11 @@ if (!defGewicht){
   /*
   p_kG = (scale3.get_units(),2);
   Serial.println(p_kG);*/
-  int Rrest = round(restG*1000);
+  Rrest = round(restG*1000);
   //String gewichtstring = String(Rrest,DEC);
   //const char* gewichtchar=gewichtstring.c_str();
   //client.publish("garbage/gewicht",gewichtchar);
 
-
-  lcd.setCursor(0,3);
-  lcd.print(Rrest);
-  
-  
-  lcd.setCursor(9,3);
-  lcd.print(pmdG);
-  
-  lcd.setCursor(17,3);
-  lcd.print(p_kG);
 
  int eindcodeInt = (Rrest+pmdG+p_kG);
  String eindcodeString;
@@ -840,8 +818,36 @@ if (!defGewicht){
 
 
   defGewicht = true;
+
 } 
 
+//print gewicht
+if(codeTekst==false){
+lcd.clear();
+lcd.setCursor(2, 0);
+lcd.print("Alles gesorteerd");
+lcd.setCursor(1, 1);
+lcd.print("Hoeveel in totaal?");
+lcd.setCursor(0, 2);
+lcd.print("PMD     Rest     P&K"); 
+lcd.setCursor(3,3);
+lcd.print("g");
+lcd.setCursor(12,3);
+lcd.print("g");
+lcd.setCursor(19,3);
+lcd.print("g");
+codeTekst = true;
+
+lcd.setCursor(0,3);
+lcd.print(Rrest);
+  
+  
+lcd.setCursor(9,3);
+lcd.print(pmdG);
+  
+lcd.setCursor(17,3);
+lcd.print(p_kG);
+}
 
 
 }
