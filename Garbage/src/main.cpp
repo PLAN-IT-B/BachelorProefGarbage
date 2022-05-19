@@ -660,6 +660,7 @@ void enkelEnergie(){
       if(check == true){ //Als de code klopt wordt de puzzel actief
         actief = true;
         client.publish("garbage/status","Garbage code is correct ingegeven");
+        client.publish("Wristbands","Stop Wristbands");
         lcd.clear();
         lcd.setCursor(4,1);
         lcd.print("Code correct");
@@ -846,7 +847,7 @@ lcd.print(Rrest);
 lcd.setCursor(9,3);
 lcd.print(pmdG);
   
-lcd.setCursor(17,3);
+lcd.setCursor(16,3);
 lcd.print(p_kG);
 }
 
