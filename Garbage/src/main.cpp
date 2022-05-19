@@ -206,7 +206,8 @@ void setup() {
   uint32_t versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
-    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
+    lcd.setCursor(0,0);
+    lcd.print("RFID niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -225,7 +226,8 @@ void setup() {
    versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
-    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
+    lcd.setCursor(0,0);
+    lcd.print("RFID niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -244,7 +246,8 @@ void setup() {
    versiondata = nfc.getFirmwareVersion();
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
-    client.publish("controlpanel/status","Garbadge RFID scanner niet gevonden");
+    lcd.setCursor(0,0);
+    lcd.print("RFID niet gevonden");
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -256,7 +259,7 @@ void setup() {
   nfc.SAMConfig();
 
 
-  //Ready
+  TCA9548A(1);
 }
 
 void callback(char *topic, byte *message, unsigned int length)
@@ -313,6 +316,8 @@ void reconnect()
   {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
+    lcd.setCursor(0,0);
+    lcd.print("Connecting ...");
     if (client.connect("GarbageESP"))
     {
       Serial.println("connected");
