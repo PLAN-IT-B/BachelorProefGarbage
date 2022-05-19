@@ -421,7 +421,7 @@ void scanRFID1(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","kleine fout");
+       client.publish("TrappenMaar/buffer","grote fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -484,7 +484,7 @@ void scanRFID2(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","kleine fout");
+       client.publish("TrappenMaar/buffer","grote fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -547,7 +547,7 @@ void scanRFID3(){
       }
 
       if(!juist){
-       client.publish("TrappenMaar/buffer","kleine fout");
+       client.publish("TrappenMaar/buffer","grote fout");
        Serial.println("Fout");
        failureSound();
       }
@@ -672,7 +672,8 @@ void enkelEnergie(){
       
 
       else{
-        client.publish("trappenmaar/buffer","grote fout");
+        client.publish("TrappenMaar/buffer","grote fout");
+        client.publish("TrappenMaar/buffer","grote fout");
         lcd.setCursor(8,2);
         lcd.print("_____");
         c = 8;
