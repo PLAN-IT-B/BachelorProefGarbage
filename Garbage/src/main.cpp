@@ -305,6 +305,12 @@ void callback(char *topic, byte *message, unsigned int length)
     
   }
 
+  if (messageTemp == "Buzz lawaai om te starten"){
+    tone(sound,NOTE_C3,2000,0);
+    noTone(sound,0);
+    
+  }
+
 
 
 }
@@ -792,8 +798,8 @@ if (!defGewicht){ //1 maal het gewicht bepalen
   Serial.println(pmdG);
   //pmdG = (scale2.get_units(),3);
   //Serial.println(pmdG);
-  pmdG = 400;
-  p_kG = 100;
+  pmdG = 359;
+  p_kG = 35;
   /*
   p_kG = (scale3.get_units(),2);
   Serial.println(p_kG);*/
