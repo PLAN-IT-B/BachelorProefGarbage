@@ -57,6 +57,7 @@ void setup_wifi()
   Serial.println(WiFi.localIP());
 }
 
+//Gewicht variabelen
 int rest = 0; //Hoeveel rest klaar?
 int pmd = 0; //Hoeveel pmd klaar?
 int p_k = 0; //Hoeveel papier en karton klaar?
@@ -68,7 +69,6 @@ int Rpmd; //Gewicht afgerond eindresultaat
 int Rp_k; //Gewicht afgerond eindresultaat
 
 bool defGewicht = false;
-int n; //Hoeveel vuil?
 
 
 
@@ -96,29 +96,31 @@ void TCA9548A(uint8_t bus){
   Serial.print(bus);
 }
 
-//Varia
+//Buttons en sound
 #define Button_pin1 32
 #define Button_pin2 25
 #define Button_pin3 33
-#define sound 23  // zat op 23
+#define sound 23  
 
+
+//Initialisatie weegschalen + variabelen voor check
 HX711 scale, scale2,scale3;
 float vorigGewicht;
 float huidigGewicht;
 int nummerWeegschaal;
 
-//Hoeveel vuilnis moet in 1 vuilbak en check rfid
+//Hoeveel RFID's/vuilnisbak + variabele voor check
 int aantalVuilnis = 4;
 bool checkVuilnis;
 
 
 //lcd
 LiquidCrystal_I2C lcd(0x27,20,4);
-int c;
-boolean bl;
-boolean codeTekst;
+int c; //variabele om plaats code te bepalen
+boolean bl; //Variabele voor het flikkeren van backlight tegen te gaan
+boolean codeTekst; //Staat er al tekst?
 
-//RFID
+//RFID lijsten met juiste headers
 uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; 
 uint8_t uidLength = 7; 
 uint8_t juisteWaardes2[4][7] = {{0x04, 0xBF, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC7, 0x04, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xC3, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xBB, 0x03, 0x82, 0x31, 0x4D, 0x84}};
@@ -126,7 +128,7 @@ uint8_t juisteWaardes1[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x
 uint8_t juisteWaardes3[4][7] = {{0x04, 0xC8, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xD0, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xDA, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xE3, 0x02, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(4,0); // (0,4)
+Adafruit_PN532 nfc(4,0); // variabele om RFID aan te spreken
 
 
 
@@ -136,7 +138,7 @@ void setup() {
   lcd.backlight();
   codeTekst = false;
   c= 8;
-  n = 4;
+  
 
   
 
@@ -151,19 +153,20 @@ void setup() {
   //Scale1
   scale.begin(26,27);
 
+  //apply the calibration
   scale.set_scale(207200);
  
-  //initializing the tare. 
   scale.tare();	//Reset the scale to 0
 
 
 
-
+  //Scale 2
    scale2.begin(23,27);
 
+  //apply the calibration
   scale2.set_scale(207200);
 
-   //initializing the tare. 
+   
    scale2.tare();	//Reset the scale to 0*/
 
    
@@ -195,7 +198,7 @@ void setup() {
 
 
   
-
+  //RFID 1 initialiseren
 
   TCA9548A(7);
    nfc.begin();
@@ -216,7 +219,7 @@ void setup() {
   nfc.SAMConfig();
   
 
-
+  //RFID 2 initialiseren
   TCA9548A(6);
    nfc.begin();
 
@@ -235,7 +238,7 @@ void setup() {
   // configure board to read RFID tags
   nfc.SAMConfig();
   
-  
+  //RFID 3 initialiseren
 
   TCA9548A(5);
    nfc.begin();
@@ -256,9 +259,11 @@ void setup() {
   nfc.SAMConfig();
 
 
-  //Ready
+
 }
 
+
+//Reageren op inputs
 void callback(char *topic, byte *message, unsigned int length)
 {
   Serial.print("Message arrived on topic: ");
@@ -273,10 +278,12 @@ void callback(char *topic, byte *message, unsigned int length)
     messageTemp += (char)message[i];
   }
 
+  //Reset
   if (messageTemp == "Reset escaperoom"){
     reset = true;
   }
 
+  //Energieniveau
   else if(messageTemp == "groen"){
     energie = true;
   }
@@ -287,6 +294,7 @@ void callback(char *topic, byte *message, unsigned int length)
     energie = false;
   }
 
+  //Ontvang codes
   else if(messageTemp.indexOf("Wristband-code") >= 0){
     code[0]= (messageTemp.charAt(15)-'0');
     code[1]= (messageTemp.charAt(16)-'0');
@@ -299,6 +307,13 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if(messageTemp.indexOf("Trein-code") >= 0){
     code[4]= (messageTemp.charAt(11)-'0');
+    
+  }
+
+  //Startgeluid
+  if (messageTemp == "Buzz lawaai om te starten"){
+    tone(sound,NOTE_C3,2000,0);
+    noTone(sound,0);
     
   }
 
@@ -381,14 +396,14 @@ void scanRFID1(){
     schrijfScannen();
    
 
-  
+    //Probeer te lezen voor 500ms
     success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,500);
 
-  
+    //Als er iets is gelezen
     if (success) {
       Serial.print("Succesvol gelezen: ");
       nfc.PrintHex(uid, uidLength);
-    //Check rfid
+    //Check of de RFID juist is
     bool juist = false;
       for(int j = 0;j<aantalVuilnis;j++){
         checkVuilnis = true;
@@ -412,7 +427,7 @@ void scanRFID1(){
           Serial.println(rest);
 
 
-          //Gewicht
+          //Ga naar de Gewichttester staat
           codeTekst = false;
           wachtOpGewicht = true;
           nummerWeegschaal = 1;
@@ -436,7 +451,7 @@ void scanRFID1(){
 
 }}
 
-void scanRFID2(){
+void scanRFID2(){ //Idem rfid 1
    if(energie && actief){
     Serial.println("Scanning ...");
     TCA9548A(6);
@@ -499,7 +514,7 @@ void scanRFID2(){
 
 }}
 
-void scanRFID3(){
+void scanRFID3(){ //Idem rfid 1
    if(energie && actief){
     Serial.println("Scanning ...");
     TCA9548A(5);
@@ -565,13 +580,15 @@ void scanRFID3(){
 
 
 
+//Reset staat
 void resetPuzzel(){
   ESP.restart();
  
 
 }
 
-void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
+//gewichtWachter staat
+void gewichtWachter(){ 
     if (codeTekst == false){
     lcd.clear();
     lcd.setCursor(2,1);
@@ -609,7 +626,7 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
       break;
     }
 
-      if((huidigGewicht - vorigGewicht)>0.01){
+      if((huidigGewicht - vorigGewicht)>0.01){ //Is er meer dan 10g bij gekomen?
         //Verlaat deze staat
         wachtOpGewicht = false;
         codeTekst= false;
@@ -624,13 +641,14 @@ void gewichtWachter(){ //Zorg dat dit nog werkt voor alle sensoren
 
 
 
-
+//Geen energie staat
 void geenEnergie(){
 lcd.noBacklight();
     bl = false;
     codeTekst = false;
 }
 
+//Energie zonder activatie staat
 void enkelEnergie(){
 
   key = keypad.getKey(); //Vraag de input van de key op
@@ -682,7 +700,7 @@ void enkelEnergie(){
       }
       
 
-      else{
+      else{ //Bestraffen en reset
         client.publish("TrappenMaar/buffer","grote fout");
         client.publish("TrappenMaar/buffer","grote fout");
         lcd.setCursor(8,2);
@@ -735,7 +753,7 @@ void enkelEnergie(){
   }
 }
 
-
+//Puzzel staat
 void puzzel(){
    //Tegen flikkeren
     if(bl ==false){
@@ -761,7 +779,7 @@ void puzzel(){
     }
 
 
-
+  //Check of knoppen zijn ingedrukt en lees de juiste scanner
   if(digitalRead(Button_pin1) == HIGH){
     scanRFID1();
   }
@@ -769,15 +787,15 @@ void puzzel(){
     scanRFID2();
   }
   if(digitalRead(Button_pin3) == HIGH){
-    Serial.println("Knop3");
     scanRFID3();
   }
 
-  if(rest == 3 && pmd == 3 && p_k == 4){
+  if(rest == 3 && pmd == 3 && p_k == 4){ //Is al het vuilnis gevonden?
       checkVuilnisTotaal = true;
 
  }}
 
+//Einde puzzel staat
 void eindePuzzel(){
 
   //Tegen flikkeren
@@ -800,7 +818,7 @@ if (!defGewicht){ //1 maal het gewicht bepalen
  //Maak het gewicht een int in gram
   Rrest = round(restG*1000);
   Rpmd = round(pmdG*1000);
-  Rp_k = round(P_KG*1000);
+  Rp_k = round(p_kG*1000);
  
 
 
@@ -822,7 +840,7 @@ if (!defGewicht){ //1 maal het gewicht bepalen
  
   
 
-  client.publish("garbage/eindcode",eindcode); //Nog aan te passen naar gewicht
+  client.publish("garbage/eindcode",eindcode); 
 
 
   defGewicht = true;
@@ -863,7 +881,7 @@ lcd.print(Rp_k);
 
 
   
-void loop() {
+void loop() { //Check in welke staat het programma is
 
   //MQTT
   if (!client.connected())
