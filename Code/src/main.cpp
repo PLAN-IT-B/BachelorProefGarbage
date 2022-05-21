@@ -283,6 +283,10 @@ void callback(char *topic, byte *message, unsigned int length)
     reset = true;
   }
 
+  if (messageTemp == "Reset vuilbak"){
+    reset = true;
+  }
+
   //Energieniveau
   else if(messageTemp == "groen"){
     energie = true;
