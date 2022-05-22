@@ -280,6 +280,13 @@ void callback(char *topic, byte *message, unsigned int length)
     reset = true;
   }
 
+  //Ontgrendel vuilbak
+  if (messageTemp == "Ontgrendel vuilbak"){
+    actief = true;
+    lcd.clear();
+    codeTekst = false;
+  }
+
   if (messageTemp == "Reset vuilbak"){
     reset = true;
   }
@@ -336,7 +343,7 @@ void reconnect()
       client.subscribe("treingame/#");
       client.subscribe("controlpanel/reset");
       client.subscribe("TrappenMaar/zone");
-      client.subscribe("garbage/eindcode");
+      client.subscribe("garbage/#");
     }
     else
     {

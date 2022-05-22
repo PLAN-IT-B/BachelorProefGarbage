@@ -287,6 +287,15 @@ void callback(char *topic, byte *message, unsigned int length)
     reset = true;
   }
 
+  //Ontgrendel manueel de vuilbak
+  if (messageTemp == "Ontgrendel vuilbak"){
+    actief = true;
+    lcd.clear();
+    codeTekst = false;
+  }
+
+
+
   //Energieniveau
   else if(messageTemp == "groen"){
     energie = true;
@@ -342,7 +351,7 @@ void reconnect()
       client.subscribe("treingame/#");
       client.subscribe("controlpanel/reset");
       client.subscribe("TrappenMaar/zone");
-      client.subscribe("garbage/eindcode");
+      client.subscribe("garbage/#");
     }
     else
     {
