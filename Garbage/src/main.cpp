@@ -127,7 +127,7 @@ uint8_t juisteWaardes1[4][7] = {{0x04, 0xB3, 0x03, 0x82, 0x31, 0x4D, 0x84}, { 0x
 uint8_t juisteWaardes3[4][7] = {{0x04, 0xC8, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xD0, 0x03, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xDA, 0x02, 0x82, 0x31, 0x4D, 0x84}, {0x04, 0xE3, 0x02, 0x82, 0x31, 0x4D, 0x84}};
 
 
-Adafruit_PN532 nfc(4,0); // (0,4)
+Adafruit_PN532 nfc(13,15); // (0,4)
 
 
 
@@ -207,7 +207,7 @@ void setup() {
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     lcd.setCursor(0,0);
-    lcd.print("RFID niet gevonden");
+    
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -227,7 +227,7 @@ void setup() {
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     lcd.setCursor(0,0);
-    lcd.print("RFID niet gevonden");
+  
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -247,7 +247,7 @@ void setup() {
   if (! versiondata) {
     Serial.print("Didn't find PN53x board");
     lcd.setCursor(0,0);
-    lcd.print("RFID niet gevonden");
+  
     while (1); // halt
   }
   // Got ok data, print it out!
@@ -334,7 +334,7 @@ void reconnect()
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     lcd.setCursor(0,0);
-    lcd.print("Connecting ...");
+   
     if (client.connect("GarbageESP"))
     {
       Serial.println("connected");
